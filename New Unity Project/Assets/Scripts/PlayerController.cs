@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     public Transform cam;
 
     public float moveSpeed;
+    public float bargeSpeed;
+    public float chargeSpeed;
+    float speed;
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
@@ -18,10 +21,13 @@ public class PlayerController : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
+        speed = moveSpeed;
     }
 
     void Update()
     {
+        Debug.Log("Speed: " + speed);
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
@@ -35,8 +41,29 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            cc.Move(moveDir.normalized * moveSpeed * Time.deltaTime);
+            cc.Move(moveDir.normalized * speed * Time.deltaTime);
         }
         else anim.SetBool("Moving", false);
+
+        if (Input.GetKey(KeyCode.B))
+        {
+            Debug.Log("B Pressed");
+            speed = bargeSpeed;
+            anim.SetBool("Barging", true);
+        }
+        else
+        {
+            speed = moveSpeed;
+            anim.SetBool("Barging", false);
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            speed = chargeSpeed;
+        }
+        else
+        {
+            speed = moveSpeed;
+        }
     }
 }
