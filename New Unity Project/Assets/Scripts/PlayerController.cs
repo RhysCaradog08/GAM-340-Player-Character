@@ -60,10 +60,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.C))
         {
             speed = chargeSpeed;
+            anim.SetBool("Charging", true);
         }
         else
         {
             speed = moveSpeed;
+            anim.SetBool("Charging", false);
         }
     }
 }
