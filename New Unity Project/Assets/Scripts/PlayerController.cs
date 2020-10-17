@@ -5,7 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController cc;
-    Animator anim;
+    public Animator upAnim;
+    public Animator lowAnim;
 
     public Transform cam;
 
@@ -20,7 +21,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
-        anim = GetComponent<Animator>();
         speed = moveSpeed;
     }
 
@@ -34,7 +34,8 @@ public class PlayerController : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
-            anim.SetBool("Moving", true);
+            upAnim.SetBool("Moving", true);
+            lowAnim.SetBool("Moving", true);
 
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
@@ -43,29 +44,43 @@ public class PlayerController : MonoBehaviour
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
         }
-        else anim.SetBool("Moving", false);
+        else
+        {
+            upAnim.SetBool("Moving", false);
+            lowAnim.SetBool("Moving", false);
+        }
 
         if (Input.GetKey(KeyCode.B))
         {
             Debug.Log("B Pressed");
             speed = bargeSpeed;
-            anim.SetBool("Barging", true);
+            upAnim.SetBool("Barging", true);
         }
         else
         {
             speed = moveSpeed;
-            anim.SetBool("Barging", false);
+            upAnim.SetBool("Barging", false);
         }
 
         if (Input.GetKey(KeyCode.C))
         {
             speed = chargeSpeed;
-            anim.SetBool("Charging", true);
+            upAnim.SetBool("Charging", true);
+            lowAnim.SetBool("Charging", true);
         }
         else
         {
             speed = moveSpeed;
-            anim.SetBool("Charging", false);
+            upAnim.SetBool("Charging", false);
+            lowAnim.SetBool("Charging", false);
+        }
+    }
+
+    private void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.CompareTag("Enemy"))
+        {
+            upAnim.SetBool("Holding", true);
         }
     }
 }
