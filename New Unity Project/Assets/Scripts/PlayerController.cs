@@ -74,11 +74,25 @@ public class PlayerController : MonoBehaviour
             upAnim.SetBool("Charging", false);
             lowAnim.SetBool("Charging", false);
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            upAnim.SetBool("Holding", false);
+        }
     }
 
     private void OnCollisionEnter(Collision col)
     {
         if (col.collider.CompareTag("Enemy"))
+        {
+            Debug.LogError(col.collider.name);
+            upAnim.SetBool("Holding", true);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
         {
             upAnim.SetBool("Holding", true);
         }
