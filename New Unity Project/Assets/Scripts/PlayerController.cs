@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
 
+    bool facingLeft;
+    bool facingRight;
+
     void Start()
     {
         cc = GetComponent<CharacterController>();
@@ -43,6 +46,20 @@ public class PlayerController : MonoBehaviour
 
             Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
+
+            if (targetAngle < 0)
+            {
+                facingLeft = true;
+                facingRight = false;
+            }
+            else if (targetAngle > 0)
+            {
+                facingLeft = false;
+                facingRight = true;
+            }
+
+            Debug.Log("Facing Left: " + facingLeft);
+            Debug.Log("Facing Right: " + facingRight);
         }
         else
         {
@@ -77,24 +94,32 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            upAnim.SetBool("Holding", false);
+            upAnim.SetBool("HoldingLeft", false);
+            upAnim.SetBool("HoldingRight", false);
         }
     }
 
-    private void OnCollisionEnter(Collision col)
+    /*private void OnCollisionEnter(Collision col)
     {
         if (col.collider.CompareTag("Enemy"))
         {
             Debug.LogError(col.collider.name);
             upAnim.SetBool("Holding", true);
         }
-    }
+    }*/
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            upAnim.SetBool("Holding", true);
+            if (facingLeft)
+            {
+                upAnim.SetBool("HoldingLeft", true);
+            }
+            else if (facingRight)
+            {
+                upAnim.SetBool("HoldingRight", true);
+            }
         }
     }
 }
