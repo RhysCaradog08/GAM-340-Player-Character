@@ -10,16 +10,26 @@ public class PlayerController : MonoBehaviour
 
     public Transform cam;
 
+    Vector3 moveDir;
+    float targetAngle;
+    float angle;
+
     public float moveSpeed;
-    public float bargeSpeed;
+    //public float bargeSpeed;
     public float chargeSpeed;
     float speed;
+
+    public float cooldown;
+    public float bargeTime;
+    public float bargeSpeed;
+
 
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
 
     bool facingLeft;
     bool facingRight;
+    bool canBarge;
 
     void Start()
     {
@@ -40,11 +50,11 @@ public class PlayerController : MonoBehaviour
             upAnim.SetBool("Moving", true);
             lowAnim.SetBool("Moving", true);
 
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
 
             if (targetAngle < 0)
@@ -67,16 +77,30 @@ public class PlayerController : MonoBehaviour
             lowAnim.SetBool("Moving", false);
         }
 
-        if (Input.GetKey(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             Debug.Log("B Pressed");
-            speed = bargeSpeed;
-            upAnim.SetBool("Barging", true);
+            StartCoroutine(Barge());
         }
-        else
+
+        if (canBarge == false)
         {
-            speed = moveSpeed;
-            upAnim.SetBool("Barging", false);
+            if(facingLeft)
+            {
+                upAnim.SetBool("BargingLeft", true);
+            }
+            else if (facingRight)
+            {
+                upAnim.SetBool("BargingRight", true);
+            }          
+            lowAnim.SetBool("Barging", true);
+        }
+        else if (canBarge == true)
+        {
+            //speed = moveSpeed;
+            upAnim.SetBool("BargingRight", false);
+            upAnim.SetBool("BargingLeft", false);
+            lowAnim.SetBool("Barging", false);
         }
 
         if (Input.GetKey(KeyCode.C))
@@ -121,5 +145,22 @@ public class PlayerController : MonoBehaviour
                 upAnim.SetBool("HoldingRight", true);
             }
         }
+    }
+
+    public IEnumerator Barge()
+    {
+        canBarge = false;
+       
+        float curTimeLeft = bargeTime;
+
+        while (curTimeLeft > 0)
+        {
+            moveDir = transform.forward * bargeSpeed * Time.deltaTime;
+
+            curTimeLeft -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        yield return new WaitForSeconds(cooldown);
+        canBarge = true;
     }
 }

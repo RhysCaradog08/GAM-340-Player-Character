@@ -1286,8 +1286,10 @@ MonoBehaviour:
   lowAnim: {fileID: 1712037442}
   cam: {fileID: 1704928440}
   moveSpeed: 10
-  bargeSpeed: 20
   chargeSpeed: 30
+  cooldown: 1
+  bargeTime: 2
+  bargeSpeed: 10
   turnSmoothTime: 0.1
 --- !u!143 &1120052050
 CharacterController:
