@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -16,13 +18,18 @@ public class PlayerController : MonoBehaviour
     float angle;
 
     public float moveSpeed;
-    //public float bargeSpeed;
     public float chargeSpeed;
     float speed;
 
     public float cooldown;
     public float bargeTime;
     public float bargeSpeed;
+
+    private GameObject throwObject;
+    public Transform throwPosL;
+    public Transform throwPosR;
+    private Rigidbody throwRb;
+    public float throwForce;
 
 
     public float turnSmoothTime = 0.1f;
@@ -31,6 +38,7 @@ public class PlayerController : MonoBehaviour
     bool facingLeft;
     bool facingRight;
     bool canBarge;
+    bool holding;
 
     void Start()
     {
@@ -64,15 +72,14 @@ public class PlayerController : MonoBehaviour
             {
                 facingLeft = true;
                 facingRight = false;
+                Debug.Log("Facing Left: " + facingLeft);
             }
             else if (targetAngle > 0)
             {
                 facingLeft = false;
                 facingRight = true;
+                Debug.Log("Facing Right: " + facingRight);
             }
-
-            Debug.Log("Facing Left: " + facingLeft);
-            Debug.Log("Facing Right: " + facingRight);
         }
         else
         {
@@ -121,6 +128,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
+            ThrowObject();
             upAnim.SetBool("HoldingLeft", false);
             upAnim.SetBool("HoldingRight", false);
         }
@@ -139,6 +147,12 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
+            throwObject = other.gameObject;
+            throwRb = other.GetComponent<Rigidbody>();
+
+            Debug.Log("ObjectRB: " + other.name);
+
+            Pickup();
             if (facingLeft)
             {
                 upAnim.SetBool("HoldingLeft", true);
@@ -148,6 +162,40 @@ public class PlayerController : MonoBehaviour
                 upAnim.SetBool("HoldingRight", true);
             }
         }
+    }
+
+    private void Pickup()
+    {
+        if (facingLeft)
+        {
+            throwObject.transform.SetParent(throwPosL);
+
+            throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosL.position, Time.time);
+        }
+
+        else if (facingRight)
+        {
+            throwObject.transform.SetParent(throwPosR);
+
+            throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosR.position, Time.time);
+        }
+
+        throwRb.constraints = RigidbodyConstraints.FreezeAll;
+    }
+
+    void DropObject()
+    {
+        throwRb.constraints = RigidbodyConstraints.None;
+        throwRb = null;
+        throwObject.transform.parent = null;
+        throwObject = null;
+    }
+
+    void ThrowObject()
+    {
+        throwRb.AddForce(cam.transform.forward * throwForce, ForceMode.Impulse);
+
+        DropObject();
     }
 
     public IEnumerator Barge()
