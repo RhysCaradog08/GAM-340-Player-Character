@@ -1289,7 +1289,7 @@ MonoBehaviour:
   chargeSpeed: 30
   cooldown: 1
   bargeTime: 2
-  bargeSpeed: 10
+  bargeSpeed: 20
   turnSmoothTime: 0.1
 --- !u!143 &1120052050
 CharacterController:

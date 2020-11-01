@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController cc;
+
     public Animator upAnim;
     public Animator lowAnim;
 
@@ -34,7 +35,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
+
         speed = moveSpeed;
+        canBarge = true;
     }
 
     void Update()
@@ -155,12 +158,15 @@ public class PlayerController : MonoBehaviour
 
         while (curTimeLeft > 0)
         {
-            moveDir = transform.forward * bargeSpeed * Time.deltaTime;
+            speed = bargeSpeed;
+
+            moveDir = transform.forward * speed * Time.deltaTime;
 
             curTimeLeft -= Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
         }
         yield return new WaitForSeconds(cooldown);
         canBarge = true;
+        speed = moveSpeed;
     }
 }
