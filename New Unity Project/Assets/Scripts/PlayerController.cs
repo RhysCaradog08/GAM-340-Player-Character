@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour
 
     void ThrowObject()
     {
-        throwRb.AddForce(cam.transform.forward * throwForce, ForceMode.Impulse);
+        throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
 
         DropObject();
     }
