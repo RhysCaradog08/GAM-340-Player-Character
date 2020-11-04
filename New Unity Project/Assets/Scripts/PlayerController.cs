@@ -38,7 +38,8 @@ public class PlayerController : MonoBehaviour
     bool facingLeft;
     bool facingRight;
     bool canBarge;
-    bool holding;
+    bool holdL;
+    bool holdR;
 
     void Start()
     {
@@ -129,8 +130,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             ThrowObject();
-            upAnim.SetBool("HoldingLeft", false);
-            upAnim.SetBool("HoldingRight", false);
+
+            if(holdL)
+            {
+                upAnim.SetTrigger("ThrowLeft");
+                upAnim.SetBool("holdingLeft", false);
+            }
+
+            if(holdR)
+            {
+                upAnim.SetTrigger("ThrowRight");
+                upAnim.SetBool("HoldingRight", false);
+            }
         }
     }
 
@@ -171,6 +182,8 @@ public class PlayerController : MonoBehaviour
             throwObject.transform.SetParent(throwPosL);
 
             throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosL.position, Time.time);
+
+            holdL = true;
         }
 
         else if (facingRight)
@@ -178,6 +191,8 @@ public class PlayerController : MonoBehaviour
             throwObject.transform.SetParent(throwPosR);
 
             throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosR.position, Time.time);
+
+            holdR = true;
         }
 
         throwRb.constraints = RigidbodyConstraints.FreezeAll;
@@ -191,7 +206,7 @@ public class PlayerController : MonoBehaviour
         throwObject = null;
     }
 
-    void ThrowObject()
+    public void ThrowObject()
     {
         throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
 
