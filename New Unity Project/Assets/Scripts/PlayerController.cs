@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log("Speed: " + speed);
+        Debug.Log("HoldingLeft: " + upAnim.GetBool("HoldingLeft"));
+        Debug.Log("HoldingRight: " + upAnim.GetBool("HoldingRight"));
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -73,13 +75,13 @@ public class PlayerController : MonoBehaviour
             {
                 facingLeft = true;
                 facingRight = false;
-                Debug.Log("Facing Left: " + facingLeft);
+                //Debug.Log("Facing Left: " + facingLeft);
             }
             else if (targetAngle > 0)
             {
                 facingLeft = false;
                 facingRight = true;
-                Debug.Log("Facing Right: " + facingRight);
+                //Debug.Log("Facing Right: " + facingRight);
             }
         }
         else
@@ -90,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            Debug.Log("B Pressed");
+            //Debug.Log("B Pressed");
             StartCoroutine(Barge());
         }
 
@@ -135,12 +137,16 @@ public class PlayerController : MonoBehaviour
             {
                 upAnim.SetTrigger("ThrowLeft");
                 upAnim.SetBool("holdingLeft", false);
+
+                holdL = false;
             }
 
             if(holdR)
             {
                 upAnim.SetTrigger("ThrowRight");
                 upAnim.SetBool("HoldingRight", false);
+
+                holdR = false;
             }
         }
     }
@@ -161,7 +167,7 @@ public class PlayerController : MonoBehaviour
             throwObject = other.gameObject;
             throwRb = other.GetComponent<Rigidbody>();
 
-            Debug.Log("ObjectRB: " + other.name);
+            //Debug.Log("ObjectRB: " + other.name);
 
             Pickup();
             if (facingLeft)
@@ -211,6 +217,9 @@ public class PlayerController : MonoBehaviour
         throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
 
         DropObject();
+
+        upAnim.ResetTrigger("ThrowLeft");
+        upAnim.ResetTrigger("ThrowRight");
     }
 
     public IEnumerator Barge()
