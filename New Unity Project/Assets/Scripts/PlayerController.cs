@@ -115,16 +115,21 @@ public class PlayerController : MonoBehaviour
             if (facingLeft)
             {
                 upAnim.SetBool("JumpLeft", true);
+                lowAnim.SetBool("JumpLeft", true);
             }
             else if (facingRight)
             {
                 upAnim.SetBool("JumpRight", true);
+                lowAnim.SetBool("JumpRight", true);
             }
         }
         else
         {
             upAnim.SetBool("JumpLeft", false);
             upAnim.SetBool("JumpRight", false);
+
+            lowAnim.SetBool("JumpLeft", false);
+            lowAnim.SetBool("JumpRight", false);
         }
 
 
