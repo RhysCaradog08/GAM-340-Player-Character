@@ -17,6 +17,12 @@ public class PlayerController : MonoBehaviour
     float targetAngle;
     float angle;
 
+    public float jumpForce;
+    public float slamForce;
+    private float gravity = 9.813f;
+    private Vector3 jumpDir = Vector3.zero;
+
+
     public float moveSpeed;
     public float chargeSpeed;
     float speed;
@@ -58,6 +64,7 @@ public class PlayerController : MonoBehaviour
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (direction.magnitude >= 0.1f)
@@ -90,6 +97,19 @@ public class PlayerController : MonoBehaviour
             upAnim.SetBool("Moving", false);
             lowAnim.SetBool("Moving", false);
         }
+
+        if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpDir.y = jumpForce;
+        }
+        else if (!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpDir.y = -slamForce;
+        }
+
+        jumpDir.y -= gravity * Time.deltaTime;
+        cc.Move(jumpDir * Time.deltaTime);
+        
 
         if (Input.GetKeyDown(KeyCode.B))
         {
