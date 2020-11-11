@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
     bool facingLeft;
     bool facingRight;
+    bool jumping;
     bool canBarge;
     bool holdL;
     bool holdR;
@@ -58,9 +59,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Debug.Log("Speed: " + speed);
-        Debug.Log("HoldingLeft: " + upAnim.GetBool("HoldingLeft"));
-        Debug.Log("HoldL: " + holdL);
-        //Debug.Log("HoldingRight: " + upAnim.GetBool("HoldingRight"));
+        Debug.Log("AnimJumping: " + upAnim.GetBool("Jumping"));
+        Debug.Log("Jumping: " + jumping);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -100,18 +100,36 @@ public class PlayerController : MonoBehaviour
 
         if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            jumpDir.y = jumpForce;
+            jumpDir.y = jumpForce;            
         }
         else if (!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             jumpDir.y = -slamForce;
         }
-
+        jumping = false;
         jumpDir.y -= gravity * Time.deltaTime;
         cc.Move(jumpDir * Time.deltaTime);
-        
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (!cc.isGrounded)
+        {
+            if (facingLeft)
+            {
+                upAnim.SetBool("JumpLeft", true);
+            }
+            else if (facingRight)
+            {
+                upAnim.SetBool("JumpRight", true);
+            }
+        }
+        else
+        {
+            upAnim.SetBool("JumpLeft", false);
+            upAnim.SetBool("JumpRight", false);
+        }
+
+
+
+            if (Input.GetKeyDown(KeyCode.B))
         {
             //Debug.Log("B Pressed");
             StartCoroutine(Barge());

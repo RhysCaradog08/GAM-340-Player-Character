@@ -1460,8 +1460,8 @@ MonoBehaviour:
   upAnim: {fileID: 47589415}
   lowAnim: {fileID: 1712037442}
   cam: {fileID: 1704928440}
-  jumpForce: 5
-  gravity: 9.813
+  jumpForce: 8
+  slamForce: 25
   moveSpeed: 15
   chargeSpeed: 50
   cooldown: 1
@@ -1497,7 +1497,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120052048}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.57, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 47589414}
