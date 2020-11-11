@@ -53,7 +53,8 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Speed: " + speed);
         Debug.Log("HoldingLeft: " + upAnim.GetBool("HoldingLeft"));
-        Debug.Log("HoldingRight: " + upAnim.GetBool("HoldingRight"));
+        Debug.Log("HoldL: " + holdL);
+        //Debug.Log("HoldingRight: " + upAnim.GetBool("HoldingRight"));
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -136,7 +137,7 @@ public class PlayerController : MonoBehaviour
             if(holdL)
             {
                 upAnim.SetTrigger("ThrowLeft");
-                upAnim.SetBool("holdingLeft", false);
+                upAnim.SetBool("HoldingLeft", false);
 
                 holdL = false;
             }
