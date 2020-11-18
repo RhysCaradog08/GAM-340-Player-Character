@@ -131,6 +131,9 @@ public class PlayerController : MonoBehaviour
 
             lowAnim.SetBool("JumpLeft", false);
             lowAnim.SetBool("JumpRight", false);
+
+            upAnim.ResetTrigger("GroundPound");
+            lowAnim.ResetTrigger("GroundPound");
         }
 
 
