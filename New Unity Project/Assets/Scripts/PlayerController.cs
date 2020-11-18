@@ -100,11 +100,12 @@ public class PlayerController : MonoBehaviour
 
         if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            jumpDir.y = jumpForce;            
+            jumpDir.y = jumpForce;
         }
         else if (!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            jumpDir.y = -slamForce;
+            GroundPound();
+            //jumpDir.y = -slamForce;
         }
         jumping = false;
         jumpDir.y -= gravity * Time.deltaTime;
@@ -134,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-            if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             //Debug.Log("B Pressed");
             StartCoroutine(Barge());
@@ -142,14 +143,14 @@ public class PlayerController : MonoBehaviour
 
         if (canBarge == false)
         {
-            if(facingLeft)
+            if (facingLeft)
             {
                 upAnim.SetBool("BargingLeft", true);
             }
             else if (facingRight)
             {
                 upAnim.SetBool("BargingRight", true);
-            }          
+            }
             lowAnim.SetBool("Barging", true);
         }
         else if (canBarge == true)
@@ -177,7 +178,7 @@ public class PlayerController : MonoBehaviour
         {
             ThrowObject();
 
-            if(holdL)
+            if (holdL)
             {
                 upAnim.SetTrigger("ThrowLeft");
                 upAnim.SetBool("HoldingLeft", false);
@@ -185,7 +186,7 @@ public class PlayerController : MonoBehaviour
                 holdL = false;
             }
 
-            if(holdR)
+            if (holdR)
             {
                 upAnim.SetTrigger("ThrowRight");
                 upAnim.SetBool("HoldingRight", false);
@@ -194,15 +195,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    /*private void OnCollisionEnter(Collision col)
-    {
-        if (col.collider.CompareTag("Enemy"))
-        {
-            Debug.LogError(col.collider.name);
-            upAnim.SetBool("Holding", true);
-        }
-    }*/
 
     private void OnTriggerEnter(Collider other)
     {
@@ -269,7 +261,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator Barge()
     {
         canBarge = false;
-       
+
         float curTimeLeft = bargeTime;
 
         while (curTimeLeft > 0)
@@ -284,5 +276,19 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         canBarge = true;
         speed = moveSpeed;
+    }
+
+    void GroundPound()
+    {
+        upAnim.SetTrigger("GroundPound");
+        lowAnim.SetTrigger("GroundPound");
+
+        upAnim.SetBool("JumpLeft", false);
+        lowAnim.SetBool("JumpLeft", false);
+
+        lowAnim.SetBool("JumpLeft", false);
+        lowAnim.SetBool("JumpRight", false);
+
+        jumpDir.y = -slamForce;
     }
 }
