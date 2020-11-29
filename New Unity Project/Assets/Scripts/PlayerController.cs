@@ -58,9 +58,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Speed: " + speed);
-        Debug.Log("AnimJumping: " + upAnim.GetBool("Jumping"));
-        Debug.Log("Jumping: " + jumping);
+        //Debug.Log("Speed: " + speed);
+        //Debug.Log("AnimJumping: " + upAnim.GetBool("Jumping"));
+        //Debug.Log("Jumping: " + jumping);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -83,13 +83,13 @@ public class PlayerController : MonoBehaviour
             {
                 facingLeft = true;
                 facingRight = false;
-                //Debug.Log("Facing Left: " + facingLeft);
+                Debug.Log("Facing Left: " + facingLeft);
             }
             else if (targetAngle > 0)
             {
                 facingLeft = false;
                 facingRight = true;
-                //Debug.Log("Facing Right: " + facingRight);
+                Debug.Log("Facing Right: " + facingRight);
             }
         }
         else
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour
             lowAnim.SetBool("Charging", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             ThrowObject();
 
@@ -201,21 +201,33 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        EnemyController enemy = other.GetComponent<EnemyController>();
+        
         if (other.CompareTag("Enemy"))
         {
-            throwObject = other.gameObject;
-            throwRb = other.GetComponent<Rigidbody>();
-
-            //Debug.Log("ObjectRB: " + other.name);
-
-            Pickup();
-            if (facingLeft)
+            //EnemyController enemy = other.GetComponent<EnemyController>();
+            
+            if (enemy.isProne == false)
             {
-                upAnim.SetBool("HoldingLeft", true);
+                enemy.isProne = true;
             }
-            else if (facingRight)
+
+            if (enemy.isProne == true)
             {
-                upAnim.SetBool("HoldingRight", true);
+                throwObject = other.gameObject;
+                throwRb = other.GetComponent<Rigidbody>();
+
+                //Debug.Log("ObjectRB: " + other.name);
+
+                Pickup();
+                if (facingLeft)
+                {
+                    upAnim.SetBool("HoldingLeft", true);
+                }
+                else if (facingRight)
+                {
+                    upAnim.SetBool("HoldingRight", true);
+                }
             }
         }
     }
