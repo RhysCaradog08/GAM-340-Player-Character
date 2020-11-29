@@ -138,10 +138,13 @@ public class PlayerController : MonoBehaviour
 
 
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //Debug.Log("B Pressed");
-            StartCoroutine(Barge());
+            if (!holdL && !holdR)
+            {
+                //Debug.Log("B Pressed");
+                StartCoroutine(Barge());
+            }
         }
 
         if (canBarge == false)
@@ -164,7 +167,7 @@ public class PlayerController : MonoBehaviour
             lowAnim.SetBool("Barging", false);
         }
 
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.Mouse1))
         {
             speed = chargeSpeed;
             upAnim.SetBool("Charging", true);
@@ -220,14 +223,6 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("ObjectRB: " + other.name);
 
                 Pickup();
-                if (facingLeft)
-                {
-                    upAnim.SetBool("HoldingLeft", true);
-                }
-                else if (facingRight)
-                {
-                    upAnim.SetBool("HoldingRight", true);
-                }
             }
         }
     }
@@ -236,6 +231,8 @@ public class PlayerController : MonoBehaviour
     {
         if (facingLeft)
         {
+            upAnim.SetBool("HoldingLeft", true);
+
             throwObject.transform.SetParent(throwPosL);
 
             throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosL.position, Time.time);
@@ -245,6 +242,8 @@ public class PlayerController : MonoBehaviour
 
         else if (facingRight)
         {
+            upAnim.SetBool("HoldingRight", true);
+
             throwObject.transform.SetParent(throwPosR);
 
             throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosR.position, Time.time);
