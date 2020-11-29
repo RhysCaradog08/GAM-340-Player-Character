@@ -43,10 +43,10 @@ public class PlayerController : MonoBehaviour
 
     bool facingLeft;
     bool facingRight;
-    bool jumping;
     bool canBarge;
     bool holdL;
     bool holdR;
+    bool groundPounding;
 
     void Start()
     {
@@ -58,9 +58,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log("Speed: " + speed);
-        //Debug.Log("AnimJumping: " + upAnim.GetBool("Jumping"));
-        //Debug.Log("Jumping: " + jumping);
+        Debug.Log("Speed: " + speed);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -98,6 +96,12 @@ public class PlayerController : MonoBehaviour
             lowAnim.SetBool("Moving", false);
         }
 
+        if(groundPounding)
+        {
+            direction = Vector3.zero;
+        }
+        else direction = new Vector3(horizontal, 0f, vertical).normalized;
+
         if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             jumpDir.y = jumpForce;
@@ -105,14 +109,15 @@ public class PlayerController : MonoBehaviour
         else if (!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             GroundPound();
-            //jumpDir.y = -slamForce;
         }
-        jumping = false;
+
         jumpDir.y -= gravity * Time.deltaTime;
         cc.Move(jumpDir * Time.deltaTime);
 
         if (!cc.isGrounded)
         {
+            groundPounding = false;
+
             if (facingLeft)
             {
                 upAnim.SetBool("JumpLeft", true);
@@ -136,13 +141,10 @@ public class PlayerController : MonoBehaviour
             lowAnim.ResetTrigger("GroundPound");
         }
 
-
-
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             if (!holdL && !holdR)
             {
-                //Debug.Log("B Pressed");
                 StartCoroutine(Barge());
             }
         }
@@ -302,6 +304,8 @@ public class PlayerController : MonoBehaviour
 
         lowAnim.SetBool("JumpLeft", false);
         lowAnim.SetBool("JumpRight", false);
+
+        groundPounding = true;
 
         jumpDir.y = -slamForce;
     }
