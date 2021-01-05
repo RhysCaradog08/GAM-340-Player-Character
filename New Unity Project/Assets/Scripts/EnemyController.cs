@@ -6,12 +6,19 @@ public class EnemyController : MonoBehaviour
 {
     Animator anim;
 
+    Rigidbody rb;
+
+    public float kbForce;
+
     public bool isProne;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
+
+        rb = GetComponent<Rigidbody>();
+
         isProne = false;
     }
 
@@ -27,5 +34,12 @@ public class EnemyController : MonoBehaviour
         {
             anim.SetBool("Prone", true);
         }
+    }
+
+    public void Knockback(Vector3 direction)
+    {
+        Vector3 rbPos = rb.transform.position;
+
+        rbPos = direction * kbForce;        
     }
 }

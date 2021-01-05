@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     bool facingLeft;
     bool facingRight;
     bool canBarge;
+    bool holding = false;
     bool holdL;
     bool holdR;
     bool groundPounding;
@@ -207,39 +208,46 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         EnemyController enemy = other.GetComponent<EnemyController>();
-        
-        if (other.CompareTag("Enemy"))
+
+        Vector3 hitDirection = transform.position - other.transform.position;
+        hitDirection = hitDirection.normalized;
+
+        if (!holding)
         {
-            //EnemyController enemy = other.GetComponent<EnemyController>();
-            
-            if (enemy.isProne == false)
+            if (other.CompareTag("Enemy"))
             {
-                enemy.isProne = true;
+                if (enemy.isProne == false)
+                {
+                    enemy.Knockback(hitDirection);
+
+                    enemy.isProne = true;
+                }
+
+                if (enemy.isProne == true)
+                {
+                    throwObject = other.gameObject;
+                    throwRb = other.GetComponent<Rigidbody>();
+
+                    //Debug.Log("ObjectRB: " + other.name);
+
+                    Pickup();
+                }
             }
 
-            if (enemy.isProne == true)
+            if (other.CompareTag("Throwable"))
             {
                 throwObject = other.gameObject;
                 throwRb = other.GetComponent<Rigidbody>();
 
-                //Debug.Log("ObjectRB: " + other.name);
-
                 Pickup();
             }
-        }
-
-        if(other.CompareTag("Throwable"))
-        {
-
-            throwObject = other.gameObject;
-            throwRb = other.GetComponent<Rigidbody>();
-
-            Pickup();
         }
     }
 
     private void Pickup()
     {
+        holding = true;
+
         if (facingLeft)
         {
             upAnim.SetBool("HoldingLeft", true);
@@ -271,6 +279,8 @@ public class PlayerController : MonoBehaviour
         throwRb = null;
         throwObject.transform.parent = null;
         throwObject = null;
+
+        holding = false;
     }
 
     public void ThrowObject()
