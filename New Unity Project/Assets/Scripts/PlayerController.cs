@@ -227,6 +227,15 @@ public class PlayerController : MonoBehaviour
                 Pickup();
             }
         }
+
+        if(other.CompareTag("Throwable"))
+        {
+
+            throwObject = other.gameObject;
+            throwRb = other.GetComponent<Rigidbody>();
+
+            Pickup();
+        }
     }
 
     private void Pickup()
