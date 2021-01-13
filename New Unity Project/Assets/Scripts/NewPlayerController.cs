@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NewPlayerController : MonoBehaviour
 {
-    CharacterController cc;
+    public CharacterController cc;
     Transform cam;
 
     public float speed = 5f;
@@ -13,10 +13,7 @@ public class NewPlayerController : MonoBehaviour
     float turnSmoothVelocity;
 
     public Vector3 moveDir;
-
-    public float bargeSpeed;
-    public float bargeTime;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -41,22 +38,5 @@ public class NewPlayerController : MonoBehaviour
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
         }
-        
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            StartCoroutine(Barge());
-        }
-    }
-
-    IEnumerator Barge()
-    {
-        float startTime = Time.time;
-
-        while(Time.time < startTime + bargeTime)
-        {
-            cc.Move(moveDir * bargeSpeed * Time.deltaTime);
-        }
-
-        yield return null;
     }
 }
