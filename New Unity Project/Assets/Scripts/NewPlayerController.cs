@@ -8,14 +8,16 @@ public class NewPlayerController : MonoBehaviour
     Transform cam;
 
     [Header("Movement")]
-    public float speed = 5f;
+    float speed;
+    public float movespeed = 10f;
+    public float chargeSpeed = 30f;
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     public Vector3 moveDir;
 
     [Header("Jumping")]
-    public float jumpSpeed = 8.0F;
-    public float gravity = 20.0F;
+    public float jumpSpeed = 5;
+    public float gravity = 9.81F;
     private Vector3 moveDirection = Vector3.zero;
 
     [Header("Barging")]
@@ -27,6 +29,8 @@ public class NewPlayerController : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
+
+        speed = movespeed;
     }
 
     // Update is called once per frame
@@ -47,9 +51,12 @@ public class NewPlayerController : MonoBehaviour
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            moveDirection.y = jumpSpeed;
+            if (cc.isGrounded)
+            {
+                moveDirection.y = jumpSpeed;
+            }
         }
         moveDirection.y -= gravity * Time.deltaTime;
         cc.Move(moveDirection * Time.deltaTime);
@@ -58,6 +65,12 @@ public class NewPlayerController : MonoBehaviour
         {
             StartCoroutine(Barge());
         }
+
+        if (Input.GetKey(KeyCode.Mouse1))
+        {
+            speed = chargeSpeed;
+        }
+        else speed = movespeed;
     }
 
     IEnumerator Barge()

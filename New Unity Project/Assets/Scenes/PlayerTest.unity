@@ -856,11 +856,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cc: {fileID: 0}
-  speed: 10
+  movespeed: 10
+  chargeSpeed: 30
   turnSmoothTime: 0.1
   moveDir: {x: 0, y: 0, z: 0}
-  jumpSpeed: 10
-  gravity: 20
+  jumpSpeed: 5
+  gravity: 9.81
   bargeTime: 0.5
   bargeSpeed: 20
 --- !u!143 &364805333
