@@ -24,6 +24,14 @@ public class NewPlayerController : MonoBehaviour
     public float bargeTime;
     public float bargeSpeed;
 
+    [Header("Throwing")]
+    bool holding;
+    private GameObject throwObject;
+    private Rigidbody throwRb;
+    public Transform throwPos;
+    public float throwForce;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,7 +71,15 @@ public class NewPlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            StartCoroutine(Barge());
+            if (holding)
+            {
+                Throw();
+            }
+            else
+
+            {
+                StartCoroutine(Barge());
+            }
         }
 
         if (Input.GetKey(KeyCode.Mouse1))
@@ -83,5 +99,68 @@ public class NewPlayerController : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        EnemyController enemy = other.GetComponent<EnemyController>();
+
+        Vector3 hitDirection = transform.position - other.transform.position;
+        hitDirection = hitDirection.normalized;
+
+        if (!holding)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                if (enemy.isProne == false)
+                {
+                    enemy.isProne = true;
+                }
+
+                if (enemy.isProne == true)
+                {
+                    throwObject = other.gameObject;
+                    throwRb = other.GetComponent<Rigidbody>();
+
+                    Pickup();
+                }
+            }
+
+            if (other.CompareTag("Throwable"))
+            {
+                throwObject = other.gameObject;
+                throwRb = other.GetComponent<Rigidbody>();
+
+                Pickup();
+            }
+        }
+    }
+
+    void Pickup()
+    {
+        throwObject.transform.SetParent(throwPos);
+
+        throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPos.position, Time.time);
+
+        throwRb.constraints = RigidbodyConstraints.FreezeAll;
+
+        holding = true;
+    }
+
+    void Throw()
+    {
+        throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
+
+        DropObject();
+    }
+
+    void DropObject()
+    {
+        throwRb.constraints = RigidbodyConstraints.None;
+        throwRb = null;
+        throwObject.transform.parent = null;
+        throwObject = null;
+
+        holding = false;
     }
 }
