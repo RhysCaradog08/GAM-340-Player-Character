@@ -21,6 +21,7 @@ public class NewPlayerController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
 
     [Header("Barging")]
+    bool barging;
     public float bargeTime;
     public float bargeSpeed;
 
@@ -82,6 +83,8 @@ public class NewPlayerController : MonoBehaviour
             }
         }
 
+        barging = false;
+
         if (Input.GetKey(KeyCode.Mouse1))
         {
             speed = chargeSpeed;
@@ -91,6 +94,8 @@ public class NewPlayerController : MonoBehaviour
 
     IEnumerator Barge()
     {
+        barging = true;
+
         float startTime = Time.time;
 
         while (Time.time < startTime + bargeTime)
@@ -108,7 +113,7 @@ public class NewPlayerController : MonoBehaviour
         Vector3 hitDirection = transform.position - other.transform.position;
         hitDirection = hitDirection.normalized;
 
-        if (!holding)
+        if (!holding && !barging)
         {
             if (other.CompareTag("Enemy"))
             {
