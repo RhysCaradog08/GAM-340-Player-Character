@@ -30,7 +30,7 @@ public class Barge : MonoBehaviour
 
         while (Time.time < startTime + bargeTime)
         {
-            pc.cc.Move(pc.moveDir * bargeSpeed * Time.deltaTime);
+            //pc.cc.Move(pc.moveDir * bargeSpeed * Time.deltaTime);
 
             yield return null;
         }

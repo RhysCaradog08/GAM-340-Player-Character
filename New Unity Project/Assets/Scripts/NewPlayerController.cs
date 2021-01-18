@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NewPlayerController : MonoBehaviour
 {
-    public CharacterController cc;
+    CharacterController cc;
     Transform cam;
 
     [Header("Movement")]
@@ -15,12 +15,15 @@ public class NewPlayerController : MonoBehaviour
     public float holdSpeed = 3f;
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
-    public Vector3 moveDir;
+    public Vector3 targetDirection;
 
     [Header("Jumping")]
     public float jumpSpeed = 5;
     public float gravity = 9.81F;
     private Vector3 moveDirection = Vector3.zero;
+    public float airSpeed = 5f;
+    Vector3 groundNormal;
+    public LayerMask mask;
 
     [Header("Barging")]
     bool barging;
@@ -36,6 +39,8 @@ public class NewPlayerController : MonoBehaviour
     public Transform bigThrowPos;
     public float throwForce;
 
+    
+
 
     // Start is called before the first frame update
     void Start()
@@ -49,30 +54,37 @@ public class NewPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RaycastHit hit;
+        Physics.Raycast(transform.position, Vector3.down, out hit, mask);
+
+        groundNormal = hit.normal;
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
-
-        if(direction.magnitude >= 0.1f)
+        if (cc.isGrounded)
         {
-            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+            moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
-            moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-            cc.Move(moveDir.normalized * speed * Time.deltaTime);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (cc.isGrounded)
+            if (moveDirection.magnitude >= 0.1f)
             {
-                moveDirection.y = jumpSpeed;
+                RotatePlayer();
+                /*float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+                targetDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                cc.Move(targetDirection.normalized * speed * Time.deltaTime);*/
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {             
+                    moveDirection.y = jumpSpeed;
             }
         }
         moveDirection.y -= gravity * Time.deltaTime;
         cc.Move(moveDirection * Time.deltaTime);
+        //cc.Move(Vector3.ProjectOnPlane(cam.rotation * moveDirection, groundNormal) * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -110,9 +122,20 @@ public class NewPlayerController : MonoBehaviour
         }*/
 
         /////DEBUGGING/////
+        Debug.Log(moveDirection);
         Debug.Log("Charging" + Input.GetKey(KeyCode.Mouse1));
         Debug.Log("Holding Big: " + holdingBig);
         Debug.Log("Speed: " + speed);
+    }
+
+    void RotatePlayer()
+    {
+        float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+        transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+        targetDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+        cc.Move(targetDirection.normalized * speed * Time.deltaTime);
     }
 
     IEnumerator Barge()
@@ -123,7 +146,7 @@ public class NewPlayerController : MonoBehaviour
 
         while (Time.time < startTime + bargeTime)
         {
-            cc.Move(moveDir * bargeSpeed * Time.deltaTime);
+            cc.Move(targetDirection * bargeSpeed * Time.deltaTime);
 
             yield return null;
         }
