@@ -8,9 +8,11 @@ public class NewPlayerController : MonoBehaviour
     Transform cam;
 
     [Header("Movement")]
+    bool charging;
     float speed;
-    public float movespeed = 10f;
+    public float moveSpeed = 10f;
     public float chargeSpeed = 30f;
+    public float holdSpeed = 3f;
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     public Vector3 moveDir;
@@ -27,9 +29,11 @@ public class NewPlayerController : MonoBehaviour
 
     [Header("Throwing")]
     bool holding;
+    bool holdingBig;
     private GameObject throwObject;
     private Rigidbody throwRb;
     public Transform throwPos;
+    public Transform bigThrowPos;
     public float throwForce;
 
 
@@ -39,7 +43,7 @@ public class NewPlayerController : MonoBehaviour
         cc = GetComponent<CharacterController>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
-        speed = movespeed;
+        speed = moveSpeed;
     }
 
     // Update is called once per frame
@@ -72,7 +76,7 @@ public class NewPlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (holding)
+            if (holding || holdingBig)
             {
                 Throw();
             }
@@ -85,11 +89,30 @@ public class NewPlayerController : MonoBehaviour
 
         barging = false;
 
+
         if (Input.GetKey(KeyCode.Mouse1))
         {
             speed = chargeSpeed;
+            charging = true;
         }
-        else speed = movespeed;
+        else
+        {
+            speed = moveSpeed;
+            charging = false;
+        }
+
+
+
+
+        /*if (holdingBig == true)
+        {
+            speed = holdSpeed;
+        }*/
+
+        /////DEBUGGING/////
+        Debug.Log("Charging" + Input.GetKey(KeyCode.Mouse1));
+        Debug.Log("Holding Big: " + holdingBig);
+        Debug.Log("Speed: " + speed);
     }
 
     IEnumerator Barge()
@@ -115,28 +138,20 @@ public class NewPlayerController : MonoBehaviour
 
         if (!holding && !barging)
         {
-            if (other.CompareTag("Enemy"))
-            {
-                if (enemy.isProne == false)
-                {
-                    enemy.isProne = true;
-                }
-
-                if (enemy.isProne == true)
-                {
-                    throwObject = other.gameObject;
-                    throwRb = other.GetComponent<Rigidbody>();
-
-                    Pickup();
-                }
-            }
-
-            if (other.CompareTag("Throwable"))
+            if (other.CompareTag("Enemy") || other.CompareTag("Throwable"))
             {
                 throwObject = other.gameObject;
                 throwRb = other.GetComponent<Rigidbody>();
 
                 Pickup();
+            }
+
+            if(other.CompareTag("BigEnemy"))
+            {
+                throwObject = other.gameObject;
+                throwRb = other.GetComponent<Rigidbody>();
+
+                BigPickup();
             }
         }
     }
@@ -152,11 +167,24 @@ public class NewPlayerController : MonoBehaviour
         holding = true;
     }
 
+    void BigPickup()
+    {
+        throwObject.transform.SetParent(bigThrowPos);
+
+        throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, bigThrowPos.position, Time.time);
+
+        throwRb.constraints = RigidbodyConstraints.FreezeAll;
+
+        holdingBig = true;
+    }
+
     void Throw()
     {
         throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
 
         DropObject();
+
+        speed = moveSpeed;
     }
 
     void DropObject()
@@ -167,5 +195,6 @@ public class NewPlayerController : MonoBehaviour
         throwObject = null;
 
         holding = false;
+        holdingBig = false;
     }
 }
