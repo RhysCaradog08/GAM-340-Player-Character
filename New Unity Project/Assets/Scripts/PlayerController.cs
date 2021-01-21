@@ -6,55 +6,45 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController cc;
+    CharacterController cc;
+    Transform cam;
 
-    public Animator upAnim;
-    public Animator lowAnim;
+    [Header("Movement")]
+    bool charging;
+    float speed;
+    public float moveSpeed = 10f;
+    public float chargeSpeed = 30f;
+    public float holdSpeed = 3f;
+    Vector3 direction;
+    public float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+    public Vector3 moveDir;
 
-    public Transform cam;
-
-    Vector3 moveDir;
-    float targetAngle;
-    float angle;
-
-    public float jumpForce;
-    public float slamForce;
-    private float gravity = 9.813f;
+    [Header("Jumping")]
+    public float jumpSpeed = 5;
+    public float gravity = 9.81F;
     private Vector3 jumpDir = Vector3.zero;
 
-
-    public float moveSpeed;
-    public float chargeSpeed;
-    float speed;
-
-    public float cooldown;
+    [Header("Barging")]
+    bool barging;
     public float bargeTime;
     public float bargeSpeed;
 
+    [Header("Throwing")]
+    bool holding;
+    bool holdingBig;
     private GameObject throwObject;
-    public Transform throwPosL;
-    public Transform throwPosR;
     private Rigidbody throwRb;
+    public Transform throwPos;
+    public Transform bigThrowPos;
     public float throwForce;
-
-
-    public float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
-
-    bool facingLeft;
-    bool facingRight;
-    bool canBarge;
-    bool holding = false;
-    bool holdL;
-    bool holdR;
-    bool groundPounding;
 
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
         speed = moveSpeed;
-        canBarge = true;
     }
 
     void Update()
@@ -68,140 +58,69 @@ public class PlayerController : MonoBehaviour
 
         if (direction.magnitude >= 0.1f)
         {
-            upAnim.SetBool("Moving", true);
-            lowAnim.SetBool("Moving", true);
-
-            targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
-
-            if (targetAngle < 0)
-            {
-                facingLeft = true;
-                facingRight = false;
-                Debug.Log("Facing Left: " + facingLeft);
-            }
-            else if (targetAngle > 0)
-            {
-                facingLeft = false;
-                facingRight = true;
-                Debug.Log("Facing Right: " + facingRight);
-            }
         }
-        else
-        {
-            upAnim.SetBool("Moving", false);
-            lowAnim.SetBool("Moving", false);
-        }
-
-        if(groundPounding)
-        {
-            direction = Vector3.zero;
-        }
-        else direction = new Vector3(horizontal, 0f, vertical).normalized;
 
         if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            jumpDir.y = jumpForce;
+            jumpDir.y = jumpSpeed;
         }
-        else if (!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
-        {
-            GroundPound();
-        }
+        
 
         jumpDir.y -= gravity * Time.deltaTime;
         cc.Move(jumpDir * Time.deltaTime);
 
-        if (!cc.isGrounded)
-        {
-            groundPounding = false;
-
-            if (facingLeft)
-            {
-                upAnim.SetBool("JumpLeft", true);
-                lowAnim.SetBool("JumpLeft", true);
-            }
-            else if (facingRight)
-            {
-                upAnim.SetBool("JumpRight", true);
-                lowAnim.SetBool("JumpRight", true);
-            }
-        }
-        else
-        {
-            upAnim.SetBool("JumpLeft", false);
-            upAnim.SetBool("JumpRight", false);
-
-            lowAnim.SetBool("JumpLeft", false);
-            lowAnim.SetBool("JumpRight", false);
-
-            upAnim.ResetTrigger("GroundPound");
-            lowAnim.ResetTrigger("GroundPound");
-        }
-
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (!holdL && !holdR)
+            if (holding || holdingBig)
+            {
+                Throw();
+            }
+            else
+
             {
                 StartCoroutine(Barge());
             }
         }
 
-        if (canBarge == false)
-        {
-            if (facingLeft)
-            {
-                upAnim.SetBool("BargingLeft", true);
-            }
-            else if (facingRight)
-            {
-                upAnim.SetBool("BargingRight", true);
-            }
-            lowAnim.SetBool("Barging", true);
-        }
-        else if (canBarge == true)
-        {
-            //speed = moveSpeed;
-            upAnim.SetBool("BargingRight", false);
-            upAnim.SetBool("BargingLeft", false);
-            lowAnim.SetBool("Barging", false);
-        }
+        barging = false;
+
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
             speed = chargeSpeed;
-            upAnim.SetBool("Charging", true);
-            lowAnim.SetBool("Charging", true);
+            charging = true;
         }
         else
         {
             speed = moveSpeed;
-            upAnim.SetBool("Charging", false);
-            lowAnim.SetBool("Charging", false);
+            charging = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+
+
+
+        /*if (holdingBig == true)
         {
-            ThrowObject();
+            speed = holdSpeed;
+        }*/
+    }
+    IEnumerator Barge()
+    {
+        barging = true;
 
-            if (holdL)
-            {
-                upAnim.SetTrigger("ThrowLeft");
-                upAnim.SetBool("HoldingLeft", false);
+        float startTime = Time.time;
 
-                holdL = false;
-            }
+        while (Time.time < startTime + bargeTime)
+        {
+            cc.Move(moveDir * bargeSpeed * Time.deltaTime);
 
-            if (holdR)
-            {
-                upAnim.SetTrigger("ThrowRight");
-                upAnim.SetBool("HoldingRight", false);
-
-                holdR = false;
-            }
+            yield return null;
         }
     }
 
@@ -212,65 +131,55 @@ public class PlayerController : MonoBehaviour
         Vector3 hitDirection = transform.position - other.transform.position;
         hitDirection = hitDirection.normalized;
 
-        if (!holding)
+        if (!holding && !barging)
         {
-            if (other.CompareTag("Enemy"))
-            {
-                if (enemy.isProne == false)
-                {
-                    enemy.Knockback(hitDirection);
-
-                    enemy.isProne = true;
-                }
-
-                if (enemy.isProne == true)
-                {
-                    throwObject = other.gameObject;
-                    throwRb = other.GetComponent<Rigidbody>();
-
-                    //Debug.Log("ObjectRB: " + other.name);
-
-                    Pickup();
-                }
-            }
-
-            if (other.CompareTag("Throwable"))
+            if (other.CompareTag("Enemy") || other.CompareTag("Throwable"))
             {
                 throwObject = other.gameObject;
                 throwRb = other.GetComponent<Rigidbody>();
 
                 Pickup();
             }
+
+            if (other.CompareTag("BigEnemy"))
+            {
+                throwObject = other.gameObject;
+                throwRb = other.GetComponent<Rigidbody>();
+
+                BigPickup();
+            }
         }
     }
 
-    private void Pickup()
+    void Pickup()
     {
-        holding = true;
+        throwObject.transform.SetParent(throwPos);
 
-        if (facingLeft)
-        {
-            upAnim.SetBool("HoldingLeft", true);
-
-            throwObject.transform.SetParent(throwPosL);
-
-            throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosL.position, Time.time);
-
-            holdL = true;
-        }
-
-        else if (facingRight)
-        {
-            upAnim.SetBool("HoldingRight", true);
-
-            throwObject.transform.SetParent(throwPosR);
-
-            throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPosR.position, Time.time);
-
-            holdR = true;
-        }
+        throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPos.position, Time.time);
 
         throwRb.constraints = RigidbodyConstraints.FreezeAll;
+
+        holding = true;
+    }
+
+    void BigPickup()
+    {
+        throwObject.transform.SetParent(bigThrowPos);
+
+        throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, bigThrowPos.position, Time.time);
+
+        throwRb.constraints = RigidbodyConstraints.FreezeAll;
+
+        holdingBig = true;
+    }
+
+    void Throw()
+    {
+        throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
+
+        DropObject();
+
+        speed = moveSpeed;
     }
 
     void DropObject()
@@ -281,51 +190,6 @@ public class PlayerController : MonoBehaviour
         throwObject = null;
 
         holding = false;
-    }
-
-    public void ThrowObject()
-    {
-        throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
-
-        DropObject();
-
-        upAnim.ResetTrigger("ThrowLeft");
-        upAnim.ResetTrigger("ThrowRight");
-    }
-
-    public IEnumerator Barge()
-    {
-        canBarge = false;
-
-        float curTimeLeft = bargeTime;
-
-        while (curTimeLeft > 0)
-        {
-            speed = bargeSpeed;
-
-            moveDir = transform.forward * speed * Time.deltaTime;
-
-            curTimeLeft -= Time.deltaTime;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-        yield return new WaitForSeconds(cooldown);
-        canBarge = true;
-        speed = moveSpeed;
-    }
-
-    void GroundPound()
-    {
-        upAnim.SetTrigger("GroundPound");
-        lowAnim.SetTrigger("GroundPound");
-
-        upAnim.SetBool("JumpLeft", false);
-        lowAnim.SetBool("JumpLeft", false);
-
-        lowAnim.SetBool("JumpLeft", false);
-        lowAnim.SetBool("JumpRight", false);
-
-        groundPounding = true;
-
-        jumpDir.y = -slamForce;
+        holdingBig = false;
     }
 }

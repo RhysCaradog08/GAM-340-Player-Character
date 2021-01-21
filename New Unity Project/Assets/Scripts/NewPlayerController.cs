@@ -13,14 +13,15 @@ public class NewPlayerController : MonoBehaviour
     public float moveSpeed = 10f;
     public float chargeSpeed = 30f;
     public float holdSpeed = 3f;
+    Vector3 direction;
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
-    public Vector3 targetDirection;
+    public Vector3 moveDir;
 
     [Header("Jumping")]
     public float jumpSpeed = 5;
     public float gravity = 9.81F;
-    private Vector3 moveDirection = Vector3.zero;
+    private Vector3 jumpDirection = Vector3.zero;
     public float airSpeed = 5f;
     Vector3 groundNormal;
     public LayerMask mask;
@@ -64,27 +65,27 @@ public class NewPlayerController : MonoBehaviour
 
         if (cc.isGrounded)
         {
-            moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
+            direction = new Vector3(horizontal, 0f, vertical).normalized;
 
-            if (moveDirection.magnitude >= 0.1f)
+            if (direction.magnitude >= 0.1f)
             {
-                RotatePlayer();
-                /*float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+                float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
                 float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
                 transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
-                targetDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-                cc.Move(targetDirection.normalized * speed * Time.deltaTime);*/
+                moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+                cc.Move(moveDir.normalized * speed * Time.deltaTime);
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
             {             
-                    moveDirection.y = jumpSpeed;
+                    jumpDirection.y = jumpSpeed;
             }
         }
-        moveDirection.y -= gravity * Time.deltaTime;
-        cc.Move(moveDirection * Time.deltaTime);
-        //cc.Move(Vector3.ProjectOnPlane(cam.rotation * moveDirection, groundNormal) * speed * Time.deltaTime);
+
+        jumpDirection.y -= gravity * Time.deltaTime;
+        cc.Move(jumpDirection * Time.deltaTime);
+        //cc.Move(Vector3.ProjectOnPlane(cam.rotation * direction, groundNormal) * speed * Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -122,20 +123,10 @@ public class NewPlayerController : MonoBehaviour
         }*/
 
         /////DEBUGGING/////
-        Debug.Log(moveDirection);
+        Debug.Log(direction);
         Debug.Log("Charging" + Input.GetKey(KeyCode.Mouse1));
         Debug.Log("Holding Big: " + holdingBig);
         Debug.Log("Speed: " + speed);
-    }
-
-    void RotatePlayer()
-    {
-        float targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
-        transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-        targetDirection = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
-        cc.Move(targetDirection.normalized * speed * Time.deltaTime);
     }
 
     IEnumerator Barge()
@@ -146,7 +137,7 @@ public class NewPlayerController : MonoBehaviour
 
         while (Time.time < startTime + bargeTime)
         {
-            cc.Move(targetDirection * bargeSpeed * Time.deltaTime);
+            cc.Move(moveDir * bargeSpeed * Time.deltaTime);
 
             yield return null;
         }
