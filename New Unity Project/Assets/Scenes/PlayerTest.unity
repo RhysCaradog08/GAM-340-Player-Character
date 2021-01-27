@@ -2278,7 +2278,9 @@ MonoBehaviour:
   bargeSpeed: 30
   throwPos: {fileID: 973535119}
   bigThrowPos: {fileID: 1667358025}
-  throwForce: 20
+  minThrowForce: 15
+  maxThrowForce: 50
+  throwChargeRate: 0.25
 --- !u!143 &1120052050
 CharacterController:
   m_ObjectHideFlags: 0

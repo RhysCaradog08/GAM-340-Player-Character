@@ -40,7 +40,10 @@ public class PlayerController : MonoBehaviour
     private Rigidbody throwRb;
     public Transform throwPos;
     public Transform bigThrowPos;
-    public float throwForce;
+    public float minThrowForce;
+    public float maxThrowForce;
+    float throwForce;
+    public float throwChargeRate;
     
 
     void Start()
@@ -50,11 +53,13 @@ public class PlayerController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
         speed = moveSpeed;
+        throwForce = minThrowForce;
     }
 
     void Update()
     {
         Debug.Log("Speed: " + speed);
+        Debug.Log("Throw Force: " + throwForce);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -80,19 +85,32 @@ public class PlayerController : MonoBehaviour
         jumpDir.y -= gravity * Time.deltaTime;
         cc.Move(jumpDir * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (holding || holdingBig)
-            {
-                stopped = true;
-            }
-            else
-
+            if(!holding || !holdingBig)
             {
                 StartCoroutine(Barge());
             }
         }
-       
+
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            if (holding || holdingBig)
+            {
+                stopped = true;
+
+                throwForce += throwChargeRate;
+
+                if(throwForce >= maxThrowForce)
+                {
+                    throwForce = maxThrowForce;
+                }
+            }
+            /*else
+            {
+                StartCoroutine(Barge());
+            }*/
+        }  
 
         barging = false;
 
@@ -100,9 +118,8 @@ public class PlayerController : MonoBehaviour
         {
             Throw();
             stopped = false;
+            throwForce = minThrowForce;
         }
-
-        Debug.Log("Stopped: " + stopped);
 
 
         if (stopped)
@@ -110,8 +127,6 @@ public class PlayerController : MonoBehaviour
             cc.enabled = false;
         }
         else cc.enabled = true;
-
-        //barging = false;
 
 
         if (Input.GetKey(KeyCode.Mouse1))
