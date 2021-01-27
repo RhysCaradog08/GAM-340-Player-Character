@@ -2246,6 +2246,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1120052051}
   - component: {fileID: 1120052050}
+  - component: {fileID: 1120052052}
   - component: {fileID: 1120052049}
   m_Layer: 0
   m_Name: Player
@@ -2313,6 +2314,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1120052052
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120052048}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 80
+  m_CollisionDetection: 0
 --- !u!1 &1124807788
 GameObject:
   m_ObjectHideFlags: 0
@@ -2354,7 +2371,6 @@ GameObject:
   - component: {fileID: 1136050645}
   - component: {fileID: 1136050648}
   - component: {fileID: 1136050647}
-  - component: {fileID: 1136050646}
   m_Layer: 9
   m_Name: Left Hand
   m_TagString: Untagged
@@ -2376,19 +2392,6 @@ Transform:
   m_Father: {fileID: 708157912}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1136050646
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1136050644}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1136050647
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2540,7 +2543,6 @@ GameObject:
   - component: {fileID: 1177989902}
   - component: {fileID: 1177989905}
   - component: {fileID: 1177989904}
-  - component: {fileID: 1177989903}
   m_Layer: 9
   m_Name: Right Hand
   m_TagString: Untagged
@@ -2562,19 +2564,6 @@ Transform:
   m_Father: {fileID: 708157912}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1177989903
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1177989901}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1177989904
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3721,7 +3710,6 @@ GameObject:
   - component: {fileID: 1997939119}
   - component: {fileID: 1997939122}
   - component: {fileID: 1997939121}
-  - component: {fileID: 1997939120}
   m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
@@ -3743,19 +3731,6 @@ Transform:
   m_Father: {fileID: 708157912}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1997939120
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1997939118}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1997939121
 MeshRenderer:
   m_ObjectHideFlags: 0
