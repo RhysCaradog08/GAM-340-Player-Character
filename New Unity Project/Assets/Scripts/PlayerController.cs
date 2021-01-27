@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     CharacterController cc;
+    Rigidbody rb;
     Transform cam;
 
     [Header("Movement")]
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
     public Vector3 moveDir;
+    public Vector3 stopPos;
 
     [Header("Jumping")]
     public float jumpSpeed = 5;
@@ -33,15 +35,18 @@ public class PlayerController : MonoBehaviour
     [Header("Throwing")]
     bool holding;
     bool holdingBig;
+    bool stopped;
     private GameObject throwObject;
     private Rigidbody throwRb;
     public Transform throwPos;
     public Transform bigThrowPos;
     public float throwForce;
+    
 
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
         speed = moveSpeed;
@@ -79,7 +84,7 @@ public class PlayerController : MonoBehaviour
         {
             if (holding || holdingBig)
             {
-                Throw();
+                stopped = true;
             }
             else
 
@@ -87,8 +92,26 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(Barge());
             }
         }
+       
 
         barging = false;
+
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            Throw();
+            stopped = false;
+        }
+
+        Debug.Log("Stopped: " + stopped);
+
+
+        if (stopped)
+        {
+            cc.enabled = false;
+        }
+        else cc.enabled = true;
+
+        //barging = false;
 
 
         if (Input.GetKey(KeyCode.Mouse1))
@@ -109,6 +132,8 @@ public class PlayerController : MonoBehaviour
         {
             speed = holdSpeed;
         }*/
+
+
     }
     IEnumerator Barge()
     {
