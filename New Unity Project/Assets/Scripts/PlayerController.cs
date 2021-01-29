@@ -43,7 +43,11 @@ public class PlayerController : MonoBehaviour
     public float minThrowForce;
     public float maxThrowForce;
     float throwForce;
-    public float throwChargeRate;
+    public float chargeRate;
+
+    [Header("VFX")]
+    public ParticleSystem sweat;
+    public float particleSpeed = 1f;
     
 
     void Start()
@@ -54,12 +58,16 @@ public class PlayerController : MonoBehaviour
 
         speed = moveSpeed;
         throwForce = minThrowForce;
+
+        ParticleSystem.MainModule main = sweat.main;
+        main.simulationSpeed = particleSpeed;
     }
 
     void Update()
     {
-        Debug.Log("Speed: " + speed);
+        //Debug.Log("Speed: " + speed);
         Debug.Log("Throw Force: " + throwForce);
+        //Debug.Log("Particle Speed: " + particleSpeed);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -81,7 +89,6 @@ public class PlayerController : MonoBehaviour
             jumpDir.y = jumpSpeed;
         }
         
-
         jumpDir.y -= gravity * Time.deltaTime;
         cc.Move(jumpDir * Time.deltaTime);
 
@@ -99,11 +106,16 @@ public class PlayerController : MonoBehaviour
             {
                 stopped = true;
 
-                throwForce += throwChargeRate;
+                throwForce += chargeRate;
 
                 if(throwForce >= maxThrowForce)
                 {
                     throwForce = maxThrowForce;
+                }
+
+                if(particleSpeed >= 3f)
+                {
+                    particleSpeed = 3f;
                 }
             }
             /*else
@@ -125,8 +137,13 @@ public class PlayerController : MonoBehaviour
         if (stopped)
         {
             cc.enabled = false;
+            sweat.Play();
         }
-        else cc.enabled = true;
+        else
+        {
+            cc.enabled = true;
+            sweat.Stop();
+        }
 
 
         if (Input.GetKey(KeyCode.Mouse1))
@@ -231,5 +248,11 @@ public class PlayerController : MonoBehaviour
 
         holding = false;
         holdingBig = false;
+    }
+
+    void SweatVFX()
+    {
+        Debug.Log("Sweating");
+        sweat.Play();
     }
 }
