@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 jumpDir = Vector3.zero;
 
     [Header("Barging")]
-    bool barging;
+    bool canBarge;
     public float bargeTime;
     public float bargeSpeed;
     float bargeDelay;
@@ -67,8 +67,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Debug.Log("Speed: " + speed);
-        Debug.Log("Throw Force: " + throwForce);
+        //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
+        Debug.Log("Can Barge: " + canBarge);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -95,21 +96,13 @@ public class PlayerController : MonoBehaviour
 
         bargeDelay -= Time.deltaTime;
 
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            //if(!holding || !holdingBig)
-            if(bargeDelay <=0)
-            {
-                StartCoroutine(Barge());
-            }
-        }
-
-        barging = false;
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
             if (holding || holdingBig)
             {
+                canBarge = false;
+
                 stopped = true;
 
                 throwForce += chargeRate;
@@ -126,7 +119,21 @@ public class PlayerController : MonoBehaviour
             Throw();
             stopped = false;
             throwForce = minThrowForce;
+
+
+            new WaitForSeconds(1);
+            canBarge = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            if (canBarge && bargeDelay <= 0)
+            {
+                StartCoroutine(Barge());
+            }
+        }
+
+        canBarge = true;
 
 
         if (stopped)
@@ -164,7 +171,7 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator Barge()
     {
-        barging = true;
+        canBarge = false;
 
         float startTime = Time.time;
 
@@ -186,7 +193,7 @@ public class PlayerController : MonoBehaviour
         Vector3 hitDirection = transform.position - other.transform.position;
         hitDirection = hitDirection.normalized;
 
-        if (!holding && !barging)
+        if (!holding && canBarge)
         {
             if (other.CompareTag("Enemy") || other.CompareTag("Throwable"))
             {
