@@ -188,26 +188,32 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        EnemyController enemy = other.GetComponent<EnemyController>();
+        throwObject = other.gameObject;
+        throwRb = other.GetComponent<Rigidbody>();
 
-        Vector3 hitDirection = transform.position - other.transform.position;
-        hitDirection = hitDirection.normalized;
+        EnemyController enemy = other.GetComponent<EnemyController>();
 
         if (!holding && canBarge)
         {
-            if (other.CompareTag("Enemy") || other.CompareTag("Throwable"))
+            if (other.CompareTag("Throwable"))
             {
-                throwObject = other.gameObject;
-                throwRb = other.GetComponent<Rigidbody>();
-
                 Pickup();
+            }
+
+            if (other.CompareTag("Enemy"))
+            {
+                if (enemy.isProne == false)
+                {
+                    enemy.isProne = true;
+                }
+                else if (enemy.canGrab == true)
+                {
+                    Pickup();
+                }
             }
 
             if (other.CompareTag("BigEnemy"))
             {
-                throwObject = other.gameObject;
-                throwRb = other.GetComponent<Rigidbody>();
-
                 BigPickup();
             }
         }

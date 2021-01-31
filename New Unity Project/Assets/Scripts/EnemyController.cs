@@ -11,6 +11,7 @@ public class EnemyController : MonoBehaviour
     public float kbForce;
 
     public bool isProne;
+    public bool canGrab;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class EnemyController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         isProne = false;
+        canGrab = false;
     }
 
     // Update is called once per frame
@@ -33,7 +35,14 @@ public class EnemyController : MonoBehaviour
         else if(isProne)
         {
             anim.SetBool("Prone", true);
+            GrabDelay();
         }
+    }
+
+    void GrabDelay()
+    {
+        new WaitForSeconds(0.5f);
+        canGrab = true;
     }
 
     public void Knockback(Vector3 direction)
