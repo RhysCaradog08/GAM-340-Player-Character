@@ -229,9 +229,9 @@ public class PlayerController : MonoBehaviour
     void Pickup()
     {
         throwObject.transform.SetParent(throwPos);
-
         throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, throwPos.position, Time.time);
 
+        throwRb.isKinematic = false;
         throwRb.constraints = RigidbodyConstraints.FreezeAll;
 
         holding = true;
@@ -240,9 +240,9 @@ public class PlayerController : MonoBehaviour
     void BigPickup()
     {
         throwObject.transform.SetParent(bigThrowPos);
-
         throwObject.transform.position = Vector3.Lerp(throwObject.transform.position, bigThrowPos.position, Time.time);
 
+        throwRb.isKinematic = false;
         throwRb.constraints = RigidbodyConstraints.FreezeAll;
 
         holdingBig = true;
@@ -261,6 +261,7 @@ public class PlayerController : MonoBehaviour
     {
         throwRb.constraints = RigidbodyConstraints.None;
         throwRb = null;
+
         throwObject.transform.parent = null;
         throwObject = null;
 

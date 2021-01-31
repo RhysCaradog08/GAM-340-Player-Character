@@ -639,6 +639,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5527987657251328244, guid: 2fff1ad112e45224da926bf1df278b21,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7417957245375657079, guid: 2fff1ad112e45224da926bf1df278b21,
         type: 3}
       propertyPath: m_Enabled
@@ -2348,8 +2353,8 @@ MonoBehaviour:
   stopPos: {x: 0, y: 0, z: 0}
   jumpSpeed: 5
   gravity: 9.813
-  bargeTime: 0.5
-  bargeSpeed: 30
+  bargeTime: 0.75
+  bargeSpeed: 15
   throwPos: {fileID: 973535119}
   bigThrowPos: {fileID: 1667358025}
   minThrowForce: 15
@@ -2974,6 +2979,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Big Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6020055848532790567, guid: 57d4fe589a9afba46a9c417c2b43dd33,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6020055848532790567, guid: 57d4fe589a9afba46a9c417c2b43dd33,
         type: 3}
@@ -3964,6 +3974,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527987657251328244, guid: 2fff1ad112e45224da926bf1df278b21,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7417957245375657079, guid: 2fff1ad112e45224da926bf1df278b21,
         type: 3}

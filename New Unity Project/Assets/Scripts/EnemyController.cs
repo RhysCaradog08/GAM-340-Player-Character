@@ -19,6 +19,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
 
         isProne = false;
         canGrab = false;
