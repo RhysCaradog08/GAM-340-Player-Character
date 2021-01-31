@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     bool barging;
     public float bargeTime;
     public float bargeSpeed;
+    float bargeDelay;
 
     [Header("Throwing")]
     bool holding;
@@ -92,13 +93,18 @@ public class PlayerController : MonoBehaviour
         jumpDir.y -= gravity * Time.deltaTime;
         cc.Move(jumpDir * Time.deltaTime);
 
+        bargeDelay -= Time.deltaTime;
+
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if(!holding || !holdingBig)
+            //if(!holding || !holdingBig)
+            if(bargeDelay <=0)
             {
                 StartCoroutine(Barge());
             }
         }
+
+        barging = false;
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
@@ -112,19 +118,8 @@ public class PlayerController : MonoBehaviour
                 {
                     throwForce = maxThrowForce;
                 }
-
-                if(particleSpeed >= 3f)
-                {
-                    particleSpeed = 3f;
-                }
             }
-            /*else
-            {
-                StartCoroutine(Barge());
-            }*/
-        }  
-
-        barging = false;
+        }        
 
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
@@ -173,9 +168,12 @@ public class PlayerController : MonoBehaviour
 
         float startTime = Time.time;
 
+        new WaitForSeconds(1); 
+
         while (Time.time < startTime + bargeTime)
         {
             cc.Move(moveDir * bargeSpeed * Time.deltaTime);
+            bargeDelay = 0.5f;
 
             yield return null;
         }

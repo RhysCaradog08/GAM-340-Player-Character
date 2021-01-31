@@ -1295,6 +1295,80 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 584749825}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &621604181
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1120052051}
+    m_Modifications:
+    - target: {fileID: 2681364438298422819, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_Name
+      value: Sweat
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422819, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.97629607
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.21643952
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 36d71b0ef71670f42be81528c9419e9a, type: 3}
 --- !u!1 &708157911
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,7 +2354,9 @@ MonoBehaviour:
   bigThrowPos: {fileID: 1667358025}
   minThrowForce: 15
   maxThrowForce: 50
-  throwChargeRate: 0.25
+  chargeRate: 1
+  sweat: {fileID: 1408247864}
+  particleSpeed: 1
 --- !u!143 &1120052050
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2313,6 +2389,7 @@ Transform:
   - {fileID: 708157912}
   - {fileID: 973535119}
   - {fileID: 1667358025}
+  - {fileID: 1408247866}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2725,6 +2802,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &1408247864 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2681364438298422817, guid: 36d71b0ef71670f42be81528c9419e9a,
+    type: 3}
+  m_PrefabInstance: {fileID: 621604181}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1408247866 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
+    type: 3}
+  m_PrefabInstance: {fileID: 621604181}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1438485097
 GameObject:
   m_ObjectHideFlags: 0
