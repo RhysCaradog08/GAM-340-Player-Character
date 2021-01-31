@@ -171,14 +171,13 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator Barge()
     {
-        canBarge = false;
-
         float startTime = Time.time;
 
         new WaitForSeconds(1); 
 
         while (Time.time < startTime + bargeTime)
         {
+            canBarge = false;
             cc.Move(moveDir * bargeSpeed * Time.deltaTime);
             bargeDelay = 0.5f;
 
@@ -192,6 +191,14 @@ public class PlayerController : MonoBehaviour
         throwRb = other.GetComponent<Rigidbody>();
 
         EnemyController enemy = other.GetComponent<EnemyController>();
+
+        if (!canBarge)
+        {
+            if(other.CompareTag("Enemy"))
+            {
+                Destroy(other.gameObject);
+            }
+        }
 
         if (!holding && canBarge)
         {
