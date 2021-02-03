@@ -1315,7 +1315,7 @@ PrefabInstance:
     - target: {fileID: 2681364438298422819, guid: 36d71b0ef71670f42be81528c9419e9a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2681364438298422830, guid: 36d71b0ef71670f42be81528c9419e9a,
         type: 3}
@@ -2501,7 +2501,7 @@ MonoBehaviour:
   maxThrowForce: 50
   chargeRate: 1
   sweat: {fileID: 1408247864}
-  particleSpeed: 1
+  particleSpeed: 3
 --- !u!143 &1120052050
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3114,6 +3114,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2450841800247679207, guid: 57d4fe589a9afba46a9c417c2b43dd33,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 2450841800247679207, guid: 57d4fe589a9afba46a9c417c2b43dd33,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2450841800247679207, guid: 57d4fe589a9afba46a9c417c2b43dd33,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.100000024
       objectReference: {fileID: 0}
     - target: {fileID: 6020055848532790567, guid: 57d4fe589a9afba46a9c417c2b43dd33,
         type: 3}

@@ -29,11 +29,13 @@ public class PlayerController : MonoBehaviour
 
     [Header("Barging")]
     bool canBarge;
+    bool isBarging;
     public float bargeTime;
     public float bargeSpeed;
     float bargeDelay;
     public GameObject trailEffect;
     public float kbStrength;
+    Vector3 kbDir;
 
     [Header("Throwing")]
     bool holding;
@@ -139,6 +141,7 @@ public class PlayerController : MonoBehaviour
         speed = moveSpeed;
         kbStrength = 0.1f;
         canBarge = true;
+        isBarging = false;
         
 
 
@@ -182,9 +185,9 @@ public class PlayerController : MonoBehaviour
 
         while (Time.time < startTime + bargeTime)
         {
+            isBarging = true;
             trailEffect.SetActive(true);
             speed = 0;
-            kbStrength = 20;
 
             canBarge = false;
             cc.Move(moveDir * bargeSpeed * Time.deltaTime);
@@ -200,6 +203,8 @@ public class PlayerController : MonoBehaviour
         throwRb = other.GetComponent<Rigidbody>();*/
 
         enemy = other.GetComponent<EnemyController>();
+
+        kbDir = other.transform.position - transform.position;
 
         if (!holding && canBarge)
         {
@@ -220,12 +225,8 @@ public class PlayerController : MonoBehaviour
                 {
                     if (enemy.isProne == false)
                     {
-                        Vector3 kbDir = other.transform.position - transform.position;
 
-                        enemy.rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
-                        kbDir.y = 0;
-
-                        enemy.isProne = true;
+                        KnockBack();
                     }
                     else if (enemy.canGrab == true)
                     {
@@ -234,12 +235,24 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                else if(other.CompareTag("Big Enemy"))
+                else if(other.CompareTag("BigEnemy"))
                 {
                     if (enemy.canGrab == true)
                     {
                         BigPickup();
                     }
+                }
+            }
+        }
+
+        if (!holding && !canBarge)
+        {
+
+            if (other.CompareTag("BigEnemy"))
+            {
+                if (enemy.isProne == false)
+                {
+                    KnockBack();
                 }
             }
         }
@@ -326,5 +339,13 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Sweating");
         sweat.Play();
+    }
+
+    void KnockBack()
+    {
+        enemy.rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
+        kbDir.y = 0;
+
+        enemy.isProne = true;
     }
 }
