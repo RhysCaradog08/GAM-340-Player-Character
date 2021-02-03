@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 jumpDir = Vector3.zero;
 
     [Header("Barging")]
-    bool canBarge;
+    public bool canBarge;
     bool isBarging;
     public float bargeTime;
     public float bargeSpeed;
