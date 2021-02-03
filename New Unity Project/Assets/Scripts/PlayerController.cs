@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     public float bargeTime;
     public float bargeSpeed;
     float bargeDelay;
+    public GameObject trailEffect;
 
     [Header("Throwing")]
     bool holding;
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
         throwForce = minThrowForce;
 
         ParticleSystem.MainModule main = sweat.main;
-        main.simulationSpeed = particleSpeed;
+        //main.simulationSpeed = particleSpeed;
     }
 
     void Update()
@@ -120,7 +121,6 @@ public class PlayerController : MonoBehaviour
             stopped = false;
             throwForce = minThrowForce;
 
-
             new WaitForSeconds(1);
             canBarge = true;
         }
@@ -133,7 +133,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        speed = moveSpeed;
         canBarge = true;
+        trailEffect.SetActive(false);
 
 
         if (stopped)
@@ -166,9 +168,8 @@ public class PlayerController : MonoBehaviour
         {
             speed = holdSpeed;
         }*/
-
-
     }
+
     IEnumerator Barge()
     {
         float startTime = Time.time;
@@ -177,6 +178,9 @@ public class PlayerController : MonoBehaviour
 
         while (Time.time < startTime + bargeTime)
         {
+            trailEffect.SetActive(true);
+            speed = 0;
+
             canBarge = false;
             cc.Move(moveDir * bargeSpeed * Time.deltaTime);
             bargeDelay = 0.5f;
