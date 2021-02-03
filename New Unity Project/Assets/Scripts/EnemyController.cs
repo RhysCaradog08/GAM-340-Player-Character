@@ -6,9 +6,10 @@ public class EnemyController : MonoBehaviour
 {
     Animator anim;
 
-    Rigidbody rb;
+    public Rigidbody rb;
 
     public float kbForce;
+    float resetTimer;
 
     public bool isProne;
     public bool canGrab;
@@ -19,7 +20,7 @@ public class EnemyController : MonoBehaviour
         anim = GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
+        //rb.isKinematic = true;
 
         isProne = false;
         canGrab = false;
@@ -30,6 +31,7 @@ public class EnemyController : MonoBehaviour
     {
         if(!isProne)
         {
+            resetTimer = 3;
             anim.SetBool("Prone", false);
         }
 
@@ -37,19 +39,22 @@ public class EnemyController : MonoBehaviour
         {
             anim.SetBool("Prone", true);
             GrabDelay();
+
+            resetTimer -= 1 * Time.deltaTime;
         }
+
+        if(resetTimer <=0)
+        {
+            isProne = false;
+        }
+        rb.isKinematic = false;
+
     }
 
     void GrabDelay()
     {
         new WaitForSeconds(0.5f);
         canGrab = true;
-    }
-
-    public void Knockback(Vector3 direction)
-    {
-        Vector3 rbPos = rb.transform.position;
-
-        rbPos = direction * kbForce;        
+        rb.isKinematic = true;
     }
 }

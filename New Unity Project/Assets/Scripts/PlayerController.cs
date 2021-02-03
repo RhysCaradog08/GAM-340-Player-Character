@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public float bargeSpeed;
     float bargeDelay;
     public GameObject trailEffect;
+    public float kbStrength;
 
     [Header("Throwing")]
     bool holding;
@@ -70,7 +71,7 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Speed: " + speed);
         //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
-        Debug.Log("Can Barge: " + canBarge);
+        //Debug.Log("Can Barge: " + canBarge);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -196,7 +197,21 @@ public class PlayerController : MonoBehaviour
 
         EnemyController enemy = other.GetComponent<EnemyController>();
 
-        if (!canBarge)
+        if(enemy != null)
+        {
+            if (enemy.isProne == false)
+            {
+                Vector3 kbDir = other.transform.position - transform.position;
+
+                //enemy.rb.isKinematic = false;
+                enemy.rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
+                kbDir.y = 0;
+
+                enemy.isProne = true;
+            }
+        }
+
+        /*if (!canBarge)
         {
             if(other.CompareTag("Enemy"))
             {
@@ -227,7 +242,7 @@ public class PlayerController : MonoBehaviour
             {
                 BigPickup();
             }
-        }
+        }*/
     }
 
     void Pickup()
