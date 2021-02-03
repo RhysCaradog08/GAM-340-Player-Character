@@ -38,8 +38,8 @@ public class PlayerController : MonoBehaviour
     Vector3 kbDir;
 
     [Header("Throwing")]
-    bool holding;
-    bool holdingBig;
+    public bool holding;
+    public bool holdingBig;
     bool stopped;
     private GameObject throwObject;
     private Rigidbody throwRb;
@@ -142,7 +142,6 @@ public class PlayerController : MonoBehaviour
         kbStrength = 0.1f;
         canBarge = true;
         isBarging = false;
-        
 
 
         if (stopped)
@@ -199,12 +198,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        /*throwObject = other.gameObject;
-        throwRb = other.GetComponent<Rigidbody>();*/
-
         enemy = other.GetComponent<EnemyController>();
-
-        kbDir = other.transform.position - transform.position;
 
         if (!holding && canBarge)
         {
@@ -223,12 +217,11 @@ public class PlayerController : MonoBehaviour
 
                 if (other.CompareTag("Enemy"))
                 {
-                    if (enemy.isProne == false)
+                    /*if (enemy.isProne == false)
                     {
-
-                        KnockBack();
+                        enemy.KnockBack();
                     }
-                    else if (enemy.canGrab == true)
+                    else*/ if (enemy.canGrab == true)
                     {
                         {
                             Pickup();
@@ -318,6 +311,7 @@ public class PlayerController : MonoBehaviour
     {
         throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
 
+        enemy.isHeld = false;
         DropObject();
 
         speed = moveSpeed;

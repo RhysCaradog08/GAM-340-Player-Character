@@ -8,6 +8,9 @@ public class EnemyController : MonoBehaviour
 
     public Rigidbody rb;
 
+    public Vector3 kbDir;
+    public float kbStrength;
+
     public float resetTimer;
 
     public bool isProne;
@@ -27,6 +30,8 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Reset Timer: " + resetTimer);
+
         if(!isProne)
         {
             resetTimer = 3;
@@ -61,5 +66,33 @@ public class EnemyController : MonoBehaviour
     {
         new WaitForSeconds(0.5f);
         canGrab = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            kbDir = other.transform.position - transform.position;
+
+            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+
+            if(player.holding == false && player.canBarge == true)
+            {
+                kbStrength = 1;
+
+                if(!isProne)
+                {
+                    KnockBack();
+                }
+            }
+        }
+    }
+
+    public void KnockBack()
+    {
+        rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
+        kbDir.y = 0;
+
+        isProne = true;
     }
 }
