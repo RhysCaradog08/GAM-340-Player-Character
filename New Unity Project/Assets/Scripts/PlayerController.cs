@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour
     public float maxThrowForce;
     float throwForce;
     public float chargeRate;
+    EnemyController enemy;
 
     [Header("VFX")]
     public ParticleSystem sweat;
@@ -134,9 +135,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        speed = moveSpeed;
-        canBarge = true;
         trailEffect.SetActive(false);
+        speed = moveSpeed;
+        kbStrength = 0.1f;
+        canBarge = true;
+        
 
 
         if (stopped)
@@ -181,6 +184,7 @@ public class PlayerController : MonoBehaviour
         {
             trailEffect.SetActive(true);
             speed = 0;
+            kbStrength = 20;
 
             canBarge = false;
             cc.Move(moveDir * bargeSpeed * Time.deltaTime);
@@ -192,22 +196,51 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        throwObject = other.gameObject;
-        throwRb = other.GetComponent<Rigidbody>();
+        /*throwObject = other.gameObject;
+        throwRb = other.GetComponent<Rigidbody>();*/
 
-        EnemyController enemy = other.GetComponent<EnemyController>();
+        enemy = other.GetComponent<EnemyController>();
 
-        if(enemy != null)
+        if (!holding && canBarge)
         {
-            if (enemy.isProne == false)
+            if (other.CompareTag("Throwable"))
             {
-                Vector3 kbDir = other.transform.position - transform.position;
+                throwObject = other.gameObject;
+                throwRb = other.GetComponent<Rigidbody>();
 
-                //enemy.rb.isKinematic = false;
-                enemy.rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
-                kbDir.y = 0;
+                Pickup();
+            }
 
-                enemy.isProne = true;
+            if (enemy != null)
+            {
+                throwObject = enemy.gameObject;
+                throwRb = enemy.rb;
+
+                if (other.CompareTag("Enemy"))
+                {
+                    if (enemy.isProne == false)
+                    {
+                        Vector3 kbDir = other.transform.position - transform.position;
+
+                        enemy.rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
+                        kbDir.y = 0;
+
+                        enemy.isProne = true;
+                    }
+                    else if (enemy.canGrab == true)
+                    {
+                        {
+                            Pickup();
+                        }
+                    }
+                }
+                else if(other.CompareTag("Big Enemy"))
+                {
+                    if (enemy.canGrab == true)
+                    {
+                        BigPickup();
+                    }
+                }
             }
         }
 
@@ -254,6 +287,7 @@ public class PlayerController : MonoBehaviour
         throwRb.constraints = RigidbodyConstraints.FreezeAll;
 
         holding = true;
+        enemy.isHeld = true;
     }
 
     void BigPickup()

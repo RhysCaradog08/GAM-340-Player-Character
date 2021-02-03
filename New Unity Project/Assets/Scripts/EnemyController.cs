@@ -8,19 +8,17 @@ public class EnemyController : MonoBehaviour
 
     public Rigidbody rb;
 
-    public float kbForce;
-    float resetTimer;
+    public float resetTimer;
 
     public bool isProne;
     public bool canGrab;
+    public bool isHeld;
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
-
         rb = GetComponent<Rigidbody>();
-        //rb.isKinematic = true;
 
         isProne = false;
         canGrab = false;
@@ -40,21 +38,28 @@ public class EnemyController : MonoBehaviour
             anim.SetBool("Prone", true);
             GrabDelay();
 
-            resetTimer -= 1 * Time.deltaTime;
+            if (!isHeld)
+            {
+                resetTimer -= 1 * Time.deltaTime;
+            }
+            else if (isHeld)
+            {
+                rb.isKinematic = false;
+            }
+            else rb.isKinematic = true;
         }
 
-        if(resetTimer <=0)
+        rb.isKinematic = false;
+
+        if (resetTimer <=0)
         {
             isProne = false;
         }
-        rb.isKinematic = false;
-
     }
 
     void GrabDelay()
     {
         new WaitForSeconds(0.5f);
         canGrab = true;
-        rb.isKinematic = true;
     }
 }
