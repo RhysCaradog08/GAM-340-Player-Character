@@ -34,6 +34,7 @@ public class EnemyController : MonoBehaviour
 
         if(!isProne)
         {
+            canGrab = false;
             resetTimer = 3;
             anim.SetBool("Prone", false);
         }

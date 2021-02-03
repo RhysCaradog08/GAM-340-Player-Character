@@ -217,11 +217,7 @@ public class PlayerController : MonoBehaviour
 
                 if (other.CompareTag("Enemy"))
                 {
-                    /*if (enemy.isProne == false)
-                    {
-                        enemy.KnockBack();
-                    }
-                    else*/ if (enemy.canGrab == true)
+                    if (enemy.canGrab == true)
                     {
                         {
                             Pickup();
@@ -245,7 +241,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (enemy.isProne == false)
                 {
-                    KnockBack();
+                    enemy.KnockBack();
                 }
             }
         }
@@ -293,7 +289,11 @@ public class PlayerController : MonoBehaviour
         throwRb.constraints = RigidbodyConstraints.FreezeAll;
 
         holding = true;
-        enemy.isHeld = true;
+
+        if (enemy != null)
+        {
+            enemy.isHeld = true;
+        }
     }
 
     void BigPickup()
@@ -309,12 +309,24 @@ public class PlayerController : MonoBehaviour
 
     void Throw()
     {
-        throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
+        if (enemy !=null)
+        {
+            enemy.isHeld = false;
 
-        enemy.isHeld = false;
-        DropObject();
+            throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
 
-        speed = moveSpeed;
+            DropObject();
+
+            speed = moveSpeed;
+        }
+        else
+        {
+            throwRb.AddForce(transform.forward * throwForce, ForceMode.Impulse);
+
+            DropObject();
+
+            speed = moveSpeed;
+        }
     }
 
     void DropObject()
@@ -333,13 +345,5 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Sweating");
         sweat.Play();
-    }
-
-    void KnockBack()
-    {
-        enemy.rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
-        kbDir.y = 0;
-
-        enemy.isProne = true;
     }
 }
