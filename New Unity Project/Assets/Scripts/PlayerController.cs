@@ -245,39 +245,6 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
-        /*if (!canBarge)
-        {
-            if(other.CompareTag("Enemy"))
-            {
-                Destroy(other.gameObject);
-            }
-        }
-
-        if (!holding && canBarge)
-        {
-            if (other.CompareTag("Throwable"))
-            {
-                Pickup();
-            }
-
-            if (other.CompareTag("Enemy"))
-            {
-                if (enemy.isProne == false)
-                {
-                    enemy.isProne = true;
-                }
-                else if (enemy.canGrab == true)
-                {
-                    Pickup();
-                }
-            }
-
-            if (other.CompareTag("BigEnemy"))
-            {
-                BigPickup();
-            }
-        }*/
     }
 
     void Pickup()

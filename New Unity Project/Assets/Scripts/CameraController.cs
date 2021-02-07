@@ -72,9 +72,8 @@ public class CameraController : MonoBehaviour
         float desiredXAngle = pivot.eulerAngles.x;
 
         Quaternion rotation = Quaternion.Euler(desiredXAngle, desiredYAngle, 0);
-        transform.position = target.position - (rotation * offset);
 
-        //transform.position = target.position - offset;
+        transform.position = target.position - (rotation * offset);
 
         if (transform.position.y < target.position.y)
         {
@@ -82,6 +81,5 @@ public class CameraController : MonoBehaviour
         }
 
         transform.LookAt(target);
-
     }
 }
