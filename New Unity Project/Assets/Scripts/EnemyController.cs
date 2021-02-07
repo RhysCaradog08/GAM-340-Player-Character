@@ -30,7 +30,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Reset Timer: " + resetTimer);
+        Debug.Log("KB Strength: " + kbStrength);
 
         if(!isProne)
         {
@@ -61,6 +61,8 @@ public class EnemyController : MonoBehaviour
         {
             isProne = false;
         }
+
+        kbStrength = 1;
     }
 
     void GrabDelay()
@@ -73,11 +75,17 @@ public class EnemyController : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            kbDir = other.transform.position - transform.position;
+            kbDir = other.transform.position + transform.position;
 
             PlayerController player = other.gameObject.GetComponent<PlayerController>();
 
-            if(player.holding == false && player.canBarge == true)
+            if (player.holding == false && player.canBarge == false)
+            {
+                kbStrength = 50;
+
+                KnockBack();
+            }
+            else if (player.holding == false && player.canBarge == true)
             {
                 kbStrength = 1;
 
@@ -86,13 +94,20 @@ public class EnemyController : MonoBehaviour
                     KnockBack();
                 }
             }
+
+            /*if(player.holding == false && player.canBarge ==false)
+            {
+                kbStrength = 10;
+
+                KnockBack();
+            }*/
         }
     }
 
     public void KnockBack()
     {
         rb.AddForce(kbDir.normalized * kbStrength, ForceMode.Impulse);
-        kbDir.y = 0;
+        //kbDir.y = 0;
 
         isProne = true;
     }
