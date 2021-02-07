@@ -7,7 +7,6 @@ TagManager:
   - Enemy
   - Throwable
   - BigEnemy
-  - Destructable
   layers:
   - Default
   - TransparentFX
