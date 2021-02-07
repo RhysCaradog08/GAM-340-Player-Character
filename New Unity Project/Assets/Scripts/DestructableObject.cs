@@ -8,18 +8,20 @@ public class DestructableObject : MonoBehaviour
     [SerializeField] MeshRenderer brokenMesh;
 
     public float health;
+    public bool isStone;
 
     // Start is called before the first frame update
     void Start()
     {
-        health = 2;
+
     }
 
     // Update is called once per frame
     void Update()
     {
         Debug.Log("Health: " + health);
-        if(health ==2)
+
+        if (health == 2)
         {
             startMesh.enabled= true;
             brokenMesh.enabled = false;
@@ -28,11 +30,13 @@ public class DestructableObject : MonoBehaviour
         {
             startMesh.enabled = false;
             brokenMesh.enabled = true;
-        }
-        else if(health <= 0)
+        }      
+        else if (health <= 0)
         {
             Destroy(this.gameObject);
         }
+
+       
     }
 
     private void OnTriggerEnter(Collider other)
