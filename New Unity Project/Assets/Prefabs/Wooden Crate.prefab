@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 9142023928387417770}
   - component: {fileID: 9142023928387417771}
   - component: {fileID: 9142023928387417772}
+  - component: {fileID: 8126553147602812218}
   - component: {fileID: 9142023928387417773}
   - component: {fileID: 9142023928387417768}
   - component: {fileID: 9142023928387417769}
   m_Layer: 0
   m_Name: Wooden Crate
-  m_TagString: Destructable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,6 +83,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!54 &8126553147602812218
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9142023928387417774}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &9142023928387417773
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -123,4 +140,3 @@ MonoBehaviour:
   startMesh: {fileID: 0}
   brokenMesh: {fileID: 9142023928387417772}
   health: 1
-  isStone: 0

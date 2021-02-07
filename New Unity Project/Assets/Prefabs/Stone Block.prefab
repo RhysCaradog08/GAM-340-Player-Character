@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 9134462359537522027}
   m_Layer: 0
   m_Name: Stone Block
-  m_TagString: Destructable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -203,4 +203,3 @@ MonoBehaviour:
   startMesh: {fileID: 9134462359537522030}
   brokenMesh: {fileID: 9134462359236683842}
   health: 2
-  isStone: 1

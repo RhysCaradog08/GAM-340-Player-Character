@@ -8,7 +8,6 @@ public class DestructableObject : MonoBehaviour
     [SerializeField] MeshRenderer brokenMesh;
 
     public float health;
-    public bool isStone;
 
     // Start is called before the first frame update
     void Start()
