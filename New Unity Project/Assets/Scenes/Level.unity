@@ -3116,6 +3116,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
+        type: 3}
+      propertyPath: gpDelay
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
+        type: 3}
+      propertyPath: gpForce
+      value: -18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
+        type: 3}
+      propertyPath: gravity
+      value: -9.813
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
+        type: 3}
+      propertyPath: jumpSpeed
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
+        type: 3}
+      propertyPath: jumpHeight
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8864207690378430777, guid: 45f2c79cd3c16454c8d41d852012849c,
         type: 3}
       propertyPath: m_Name

@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     [Header("Jumping")]
     public float jumpSpeed = 5;
     public float gravity = 9.81F;
-    private Vector3 jumpDir = Vector3.zero;
+    Vector3 velocity;
 
     [Header("Barging")]
     public bool canBarge;
@@ -51,6 +51,10 @@ public class PlayerController : MonoBehaviour
     public float chargeRate;
     EnemyController enemy;
 
+    [Header("GroundPound")]
+    public float gpDelay;
+    public float gpForce;
+
     [Header("VFX")]
     public ParticleSystem sweat;
     public float particleSpeed = 1f;
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
         //Debug.Log("Can Barge: " + canBarge);
+        Debug.Log("Is Grounded: " + cc.isGrounded);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -91,13 +96,23 @@ public class PlayerController : MonoBehaviour
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
         }
 
-        if (cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (cc.isGrounded)
         {
-            jumpDir.y = jumpSpeed;
-        }
+            velocity.y = 0f;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                velocity.y = jumpSpeed;
+            }
+        } 
         
-        jumpDir.y -= gravity * Time.deltaTime;
-        cc.Move(jumpDir * Time.deltaTime);
+        if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(GroundPound());
+        }
+
+        velocity.y += gravity * Time.deltaTime;
+        cc.Move(velocity * Time.deltaTime);
 
         bargeDelay -= Time.deltaTime;
 
@@ -147,7 +162,11 @@ public class PlayerController : MonoBehaviour
         if (stopped)
         {
             cc.enabled = false;
-            sweat.Play();
+
+            if (holding)
+            {
+                sweat.Play();
+            }
         }
         else
         {
@@ -312,5 +331,15 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Sweating");
         sweat.Play();
+    }
+
+    IEnumerator GroundPound()
+    {
+        stopped = true;
+
+        yield return new WaitForSeconds(gpDelay);
+        velocity.y = gpForce;
+
+        stopped = false;
     }
 }
