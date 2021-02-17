@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     EnemyController enemy;
 
     [Header("GroundPound")]
+    public bool groundPounding;
     public float gpDelay;
     public float gpForce;
 
@@ -79,7 +80,7 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
         //Debug.Log("Can Barge: " + canBarge);
-        Debug.Log("Is Grounded: " + cc.isGrounded);
+        Debug.Log("GroundPounding: " + groundPounding);
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -98,6 +99,7 @@ public class PlayerController : MonoBehaviour
 
         if (cc.isGrounded)
         {
+            groundPounding = false;
             velocity.y = 0f;
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -108,7 +110,7 @@ public class PlayerController : MonoBehaviour
         
         if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(GroundPound());
+            groundPounding = true;
         }
 
         velocity.y += gravity * Time.deltaTime;
@@ -172,6 +174,11 @@ public class PlayerController : MonoBehaviour
         {
             cc.enabled = true;
             sweat.Stop();
+        }
+
+        if (groundPounding)
+        {
+            StartCoroutine(GroundPound());
         }
 
 

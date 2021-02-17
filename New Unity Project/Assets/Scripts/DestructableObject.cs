@@ -44,7 +44,7 @@ public class DestructableObject : MonoBehaviour
         {
             PlayerController pc = other.gameObject.GetComponent<PlayerController>();
 
-            if (pc.canBarge == false)
+            if (pc.canBarge == false || pc.groundPounding == true)
             {
                 health -= 1;
             }
