@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
         
         if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Mouse1))
         {
-            waitTime = 1;
+            waitTime = 0.5f;
             groundPounding = true;
         }
 
