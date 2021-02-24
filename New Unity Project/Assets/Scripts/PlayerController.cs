@@ -84,9 +84,9 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
         //Debug.Log("Can Barge: " + canBarge);
-        Debug.Log("GroundPounding: " + groundPounding);
+        //Debug.Log("GroundPounding: " + groundPounding);
         //Debug.Log("Stopped: " + stopped);
-        Debug.Log("Wait Time: " + waitTime);
+        //Debug.Log("Wait Time: " + waitTime);
         
 
         //////////////////////////////////////////////////

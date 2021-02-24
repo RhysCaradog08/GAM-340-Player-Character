@@ -118,7 +118,7 @@ MonoBehaviour:
   moveDir: {x: 0, y: 0, z: 0}
   stopPos: {x: 0, y: 0, z: 0}
   jumpSpeed: 5
-  gravity: 9.813
+  gravity: -9.813
   canBarge: 0
   bargeTime: 0.75
   bargeSpeed: 20
