@@ -4539,6 +4539,11 @@ PrefabInstance:
       propertyPath: jumpHeight
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
+        type: 3}
+      propertyPath: particleSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8864207690378430777, guid: 45f2c79cd3c16454c8d41d852012849c,
         type: 3}
       propertyPath: m_Name
@@ -4557,12 +4562,12 @@ PrefabInstance:
     - target: {fileID: 8864207690378430778, guid: 45f2c79cd3c16454c8d41d852012849c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 1.25
       objectReference: {fileID: 0}
     - target: {fileID: 8864207690378430778, guid: 45f2c79cd3c16454c8d41d852012849c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 80.5
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 8864207690378430778, guid: 45f2c79cd3c16454c8d41d852012849c,
         type: 3}
