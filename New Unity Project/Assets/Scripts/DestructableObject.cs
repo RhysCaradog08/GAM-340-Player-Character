@@ -18,8 +18,6 @@ public class DestructableObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Health: " + health);
-
         if (health == 2)
         {
             startMesh.enabled= true;
@@ -44,10 +42,15 @@ public class DestructableObject : MonoBehaviour
         {
             PlayerController pc = other.gameObject.GetComponent<PlayerController>();
 
-            if (pc.canBarge == false || pc.groundPounding == true)
+            if (pc.canBarge == false)
             {
                 health -= 1;
             }
+        }
+
+        if(other.CompareTag("GP Sphere"))
+        {
+            health -= 1;
         }
     }
 }

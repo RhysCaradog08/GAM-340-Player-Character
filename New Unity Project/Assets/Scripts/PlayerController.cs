@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour
     public bool groundPounding;
     public float gpDelay;
     public float gpForce;
+    float waitTime;
+    public GameObject gpSphere;
 
     [Header("VFX")]
     public ParticleSystem sweat;
@@ -76,11 +78,18 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        /////DEBUGS/////
+        
         //Debug.Log("Speed: " + speed);
         //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
         //Debug.Log("Can Barge: " + canBarge);
         Debug.Log("GroundPounding: " + groundPounding);
+        //Debug.Log("Stopped: " + stopped);
+        Debug.Log("Wait Time: " + waitTime);
+        
+
+        //////////////////////////////////////////////////
 
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
@@ -99,17 +108,30 @@ public class PlayerController : MonoBehaviour
 
         if (cc.isGrounded)
         {
-            groundPounding = false;
+            //groundPounding = false;
             velocity.y = 0f;
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 velocity.y = jumpSpeed;
             }
+
+            if (waitTime <= 0)
+            {
+                waitTime = 0;
+                stopped = false;
+                groundPounding = false;
+            }
+            else
+            {
+                stopped = true;
+                groundPounding = true;
+            }
         } 
         
-        if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Mouse1))
         {
+            waitTime = 1;
             groundPounding = true;
         }
 
@@ -179,6 +201,14 @@ public class PlayerController : MonoBehaviour
         if (groundPounding)
         {
             StartCoroutine(GroundPound());
+
+            gpSphere.SetActive(true);
+        }
+        else gpSphere.SetActive(false);
+
+        if(cc.isGrounded && groundPounding)
+        {
+                waitTime -= Time.deltaTime;
         }
 
 
@@ -336,7 +366,7 @@ public class PlayerController : MonoBehaviour
 
     void SweatVFX()
     {
-        Debug.Log("Sweating");
+        //Debug.Log("Sweating");
         sweat.Play();
     }
 
