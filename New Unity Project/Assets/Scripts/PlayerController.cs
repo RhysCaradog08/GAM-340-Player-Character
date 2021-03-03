@@ -25,7 +25,9 @@ public class PlayerController : MonoBehaviour
     [Header("Jumping")]
     public float jumpSpeed = 5;
     public float gravity = 9.81F;
-    Vector3 velocity;
+    [SerializeField]Vector3 velocity;
+    public float fallMultiplier = 2;
+    public float lowJumpMultiplier = 2.5f;
 
     [Header("Barging")]
     public bool canBarge;
@@ -127,6 +129,15 @@ public class PlayerController : MonoBehaviour
                 groundPounding = true;
             }
         } 
+
+        if(velocity.y < 0)
+        {
+            velocity.y += gravity * (fallMultiplier -1) * Time.deltaTime;
+        }
+        else if(velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        {
+            velocity.y += gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
         
         if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Mouse1))
         {
