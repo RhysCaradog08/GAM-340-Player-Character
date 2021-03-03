@@ -91,8 +91,8 @@ public class PlayerController : MonoBehaviour
 
         //////////////////////////////////////////////////
 
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
 
@@ -108,7 +108,6 @@ public class PlayerController : MonoBehaviour
 
         if (cc.isGrounded)
         {
-            //groundPounding = false;
             velocity.y = 0f;
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -208,9 +207,8 @@ public class PlayerController : MonoBehaviour
 
         if(cc.isGrounded && groundPounding)
         {
-                waitTime -= Time.deltaTime;
+            waitTime -= Time.deltaTime;
         }
-
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
@@ -222,9 +220,6 @@ public class PlayerController : MonoBehaviour
             speed = moveSpeed;
             charging = false;
         }
-
-
-
 
         /*if (holdingBig == true)
         {
@@ -366,7 +361,6 @@ public class PlayerController : MonoBehaviour
 
     void SweatVFX()
     {
-        //Debug.Log("Sweating");
         sweat.Play();
     }
 
