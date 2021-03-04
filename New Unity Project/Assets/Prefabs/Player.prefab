@@ -150,7 +150,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495552417}
-  m_LocalRotation: {x: 0.05333858, y: -1.2643027e-18, z: 3.5892548e-17, w: 0.9985765}
+  m_LocalRotation: {x: 0.05333858, y: 4.415606e-16, z: -1.1481629e-17, w: 0.9985765}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -476,7 +476,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135297219}
-  m_LocalRotation: {x: 0.07149333, y: -0.000000030640923, z: 0.0000000021962414, w: 0.9974411}
+  m_LocalRotation: {x: 0.07149333, y: 0.000000030640923, z: -0.0000000021962414, w: 0.9974411}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -891,7 +891,7 @@ MonoBehaviour:
   lowJumpMultiplier: 5
   canBarge: 0
   bargeTime: 0.75
-  bargeSpeed: 20
+  bargeSpeed: 30
   trailEffect: {fileID: 8864207690432065033}
   kbStrength: 0.1
   holding: 0
