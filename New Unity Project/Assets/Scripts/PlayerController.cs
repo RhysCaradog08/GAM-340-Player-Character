@@ -239,7 +239,7 @@ public class PlayerController : MonoBehaviour
             waitTime -= Time.deltaTime;
         }
 
-        if (Input.GetKey(KeyCode.Mouse1))
+        /*if (Input.GetKey(KeyCode.Mouse1))
         {
             speed = chargeSpeed;
             charging = true;
@@ -250,7 +250,7 @@ public class PlayerController : MonoBehaviour
             charging = false;
         }
 
-        /*if (holdingBig == true)
+        if (holdingBig == true)
         {
             speed = holdSpeed;
         }*/
