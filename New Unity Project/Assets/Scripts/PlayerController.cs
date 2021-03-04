@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 stopPos;
 
     [Header("Jumping")]
+    bool hasJumped;
+    bool canPressSpace;
     public float jumpSpeed = 5;
     public float gravity = 9.81F;
     [SerializeField]Vector3 velocity;
@@ -67,6 +69,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
+
         cc = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
@@ -81,17 +85,67 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         /////DEBUGS/////
-        
+
         //Debug.Log("Speed: " + speed);
         //Debug.Log("Throw Force: " + throwForce);
         //Debug.Log("Particle Speed: " + particleSpeed);
         //Debug.Log("Can Barge: " + canBarge);
         //Debug.Log("GroundPounding: " + groundPounding);
         //Debug.Log("Stopped: " + stopped);
-        //Debug.Log("Wait Time: " + waitTime);
-        
+        //Debug.Log("Wait Time: " + waitTime);  
+        Debug.Log("Has Jumped : " + hasJumped);
+        Debug.Log("Can Press Space: " + canPressSpace);
 
         //////////////////////////////////////////////////
+
+        if (Input.GetKeyUp(KeyCode.Space) && !hasJumped)
+        {
+            canPressSpace = true;
+        }
+
+        if (cc.isGrounded)
+        {
+            velocity.y = 0f;
+
+            if (Input.GetKey(KeyCode.Space) && canPressSpace)
+            {
+                velocity.y = jumpSpeed;
+                hasJumped = true;
+            }
+
+            if (hasJumped)
+            {
+                canPressSpace = false;
+                hasJumped = false;
+            }
+
+            if (waitTime <= 0)
+            {
+                waitTime = 0;
+                stopped = false;
+                groundPounding = false;
+            }
+            else
+            {
+                stopped = true;
+                groundPounding = true;
+            }
+        }
+
+        if (velocity.y < 0)
+        {
+            velocity.y += gravity * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        {
+            velocity.y += gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+
+        if (!cc.isGrounded && Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            waitTime = 0.5f;
+            groundPounding = true;
+        }
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -106,44 +160,7 @@ public class PlayerController : MonoBehaviour
 
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             cc.Move(moveDir.normalized * speed * Time.deltaTime);
-        }
-
-        if (cc.isGrounded)
-        {
-            velocity.y = 0f;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                velocity.y = jumpSpeed;
-            }
-
-            if (waitTime <= 0)
-            {
-                waitTime = 0;
-                stopped = false;
-                groundPounding = false;
-            }
-            else
-            {
-                stopped = true;
-                groundPounding = true;
-            }
-        } 
-
-        if(velocity.y < 0)
-        {
-            velocity.y += gravity * (fallMultiplier -1) * Time.deltaTime;
-        }
-        else if(velocity.y > 0 && !Input.GetKey(KeyCode.Space))
-        {
-            velocity.y += gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
-        
-        if(!cc.isGrounded && Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            waitTime = 0.5f;
-            groundPounding = true;
-        }
+        }        
 
         velocity.y += gravity * Time.deltaTime;
         cc.Move(velocity * Time.deltaTime);

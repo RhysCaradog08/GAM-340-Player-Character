@@ -18,7 +18,7 @@ public class DestructableObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (health == 2)
+        if (health == 2)
         {
             startMesh.enabled= true;
             brokenMesh.enabled = false;
@@ -28,7 +28,7 @@ public class DestructableObject : MonoBehaviour
             startMesh.enabled = false;
             brokenMesh.enabled = true;
         }      
-        else*/ if (health <= 0)
+        else if (health <= 0)
         {
             Destroy(this.gameObject);
         }
