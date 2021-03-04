@@ -150,7 +150,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495552417}
-  m_LocalRotation: {x: 0.21893832, y: -0.000000016787986, z: 0.0000000037669237, w: 0.9757387}
+  m_LocalRotation: {x: 0.05333858, y: -1.2643027e-18, z: 3.5892548e-17, w: 0.9985765}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -476,7 +476,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135297219}
-  m_LocalRotation: {x: 0.23665029, y: -2.5504922e-15, z: 4.2084353e-16, w: 0.9715949}
+  m_LocalRotation: {x: 0.07149333, y: -0.000000030640923, z: 0.0000000021962414, w: 0.9974411}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -550,7 +550,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1855728020}
-  m_LocalRotation: {x: 0.20120096, y: -1e-45, z: -0, w: 0.97955}
+  m_LocalRotation: {x: 0.03521417, y: -0, z: -0, w: 0.9993798}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -761,10 +761,10 @@ MonoBehaviour:
   m_MinimumOcclusionTime: 0
   m_CameraRadius: 0.1
   m_Strategy: 1
-  m_MaximumEffort: 4
-  m_SmoothingTime: 1
+  m_MaximumEffort: 5
+  m_SmoothingTime: 0.1
   m_Damping: 0.5
-  m_DampingWhenOccluded: 0.1
+  m_DampingWhenOccluded: 1
   m_OptimalTargetDistance: 5
 --- !u!1 &6170584826552059424
 GameObject:
@@ -836,7 +836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8864207690378430777}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8864207691862363057}
@@ -884,11 +884,11 @@ MonoBehaviour:
   turnSmoothTime: 0.1
   moveDir: {x: 0, y: 0, z: 0}
   stopPos: {x: 0, y: 0, z: 0}
-  jumpSpeed: 7
+  jumpSpeed: 8
   gravity: -9.813
   velocity: {x: 0, y: 0, z: 0}
-  fallMultiplier: 2
-  lowJumpMultiplier: 2.5
+  fallMultiplier: 10
+  lowJumpMultiplier: 5
   canBarge: 0
   bargeTime: 0.75
   bargeSpeed: 20

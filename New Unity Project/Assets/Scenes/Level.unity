@@ -1805,7 +1805,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 1
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -5428,11 +5428,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1135297221, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000004280929
+      value: 0.0000000042809285
       objectReference: {fileID: 0}
     - target: {fileID: 1135297221, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -4.211431e-10
+      value: -4.2114304e-10
       objectReference: {fileID: 0}
     - target: {fileID: 1855728022, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5457,6 +5457,18 @@ PrefabInstance:
     - target: {fileID: 2001554084, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalPosition.z
       value: -10.000008
+      objectReference: {fileID: 0}
+    - target: {fileID: 2001554085, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
+      propertyPath: m_Damping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2001554085, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
+      propertyPath: m_SmoothingTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2001554085, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
+      propertyPath: m_DampingWhenOccluded
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8864207690378430776, guid: 45f2c79cd3c16454c8d41d852012849c,
         type: 3}
