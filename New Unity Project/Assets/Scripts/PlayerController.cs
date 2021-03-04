@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jumping")]
     bool hasJumped;
-    bool canPressSpace;
+    bool canPressSpace = true;
     public float jumpSpeed = 5;
     public float gravity = 9.81F;
     [SerializeField]Vector3 velocity;
@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
 
         cc = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();

@@ -4,15 +4,54 @@ using UnityEngine;
 
 public class Button : MonoBehaviour
 {
-    public Animator anim;
+    Animator buttonAnim;
+
+    public Animator targetAnim;
+
+    public bool bargeButton;
+    public bool throwButton;
+    public bool groundButton;
+
+    private void Start()
+    {
+        buttonAnim = GetComponent<Animator>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other .CompareTag("Throwable"))
+        if (throwButton)
         {
-            Debug.Log("Button Pressed");
+            if (other.CompareTag("Throwable"))
+            {
+                buttonAnim.SetTrigger("Pressed");
 
-            anim.SetTrigger("Activated");
+                targetAnim.SetTrigger("Activated");
+            }
+        }
+
+        if (bargeButton)
+        {
+            if (other.CompareTag("Player"))
+            {
+                PlayerController player = other.gameObject.GetComponent<PlayerController>();
+
+                if (player.canBarge == false)
+                {
+                    buttonAnim.SetTrigger("Pressed");
+
+                    targetAnim.SetTrigger("Activated");
+                }
+            }
+        }
+
+        if(groundButton)
+        {
+            if (other.CompareTag("GP Sphere"))
+            {
+                buttonAnim.SetTrigger("Pressed");
+
+                targetAnim.SetTrigger("Activated");
+            }
         }
     }
 }
