@@ -46,8 +46,6 @@ public class Button : MonoBehaviour
 
         if (groundButton)
         {
-            Debug.Log("In Trigger");
-
             if (other.CompareTag("Player"))
             {
                 PlayerController player = other.gameObject.GetComponent<PlayerController>();
