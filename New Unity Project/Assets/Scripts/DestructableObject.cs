@@ -51,8 +51,6 @@ public class DestructableObject : MonoBehaviour
         if (other.CompareTag("GP Sphere"))
         {
             health -= 1;
-
-            Debug.Log("Being Stomped");
         }
     }
 }

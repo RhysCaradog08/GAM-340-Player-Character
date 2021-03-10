@@ -85,20 +85,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        /////DEBUGS/////
-
-        //Debug.Log("Speed: " + speed);
-        //Debug.Log("Throw Force: " + throwForce);
-        //Debug.Log("Particle Speed: " + particleSpeed);
-        //Debug.Log("Can Barge: " + canBarge);
-        //Debug.Log("GroundPounding: " + groundPounding);
-        //Debug.Log("Stopped: " + stopped);
-        //Debug.Log("Wait Time: " + waitTime);  
-        Debug.Log("Has Jumped : " + hasJumped);
-        Debug.Log("Can Press Space: " + canPressSpace);
-
-        //////////////////////////////////////////////////
-
         if (Input.GetKeyUp(KeyCode.Space) && !hasJumped)
         {
             canPressSpace = true;

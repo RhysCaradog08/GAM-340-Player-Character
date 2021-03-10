@@ -44,13 +44,20 @@ public class Button : MonoBehaviour
             }
         }
 
-        if(groundButton)
+        if (groundButton)
         {
-            if (other.CompareTag("GP Sphere"))
-            {
-                buttonAnim.SetTrigger("Pressed");
+            Debug.Log("In Trigger");
 
-                targetAnim.SetTrigger("Activated");
+            if (other.CompareTag("Player"))
+            {
+                PlayerController player = other.gameObject.GetComponent<PlayerController>();
+
+                if (player.groundPounding)
+                {
+                    buttonAnim.SetTrigger("Pressed");
+
+                    targetAnim.SetTrigger("Activated");
+                }
             }
         }
     }
