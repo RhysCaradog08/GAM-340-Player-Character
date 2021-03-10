@@ -8371,7 +8371,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseCanvas: {fileID: 2131530247}
   menu: {fileID: 1367748965}
-  controls: {fileID: 897672751}
+  controls: {fileID: 1479884255}
   gameText: {fileID: 0}
   isPaused: 0
 --- !u!4 &1447311286
@@ -9232,12 +9232,12 @@ PrefabInstance:
     - target: {fileID: 3326043985767938393, guid: c337c65214a32b643bcca6ac5efe6726,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000008572986
+      value: -0.000000008572986
       objectReference: {fileID: 0}
     - target: {fileID: 3326043985767938393, guid: c337c65214a32b643bcca6ac5efe6726,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -7.202647e-10
+      value: 7.202647e-10
       objectReference: {fileID: 0}
     - target: {fileID: 3326043985767938393, guid: c337c65214a32b643bcca6ac5efe6726,
         type: 3}
@@ -9674,11 +9674,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 495552419, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000004286493
+      value: -0.000000004286494
       objectReference: {fileID: 0}
     - target: {fileID: 495552419, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -3.6013229e-10
+      value: 3.6013237e-10
       objectReference: {fileID: 0}
     - target: {fileID: 1135297221, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9706,11 +9706,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1855728022, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000004292321
+      value: 0.000000004292321
       objectReference: {fileID: 0}
     - target: {fileID: 1855728022, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 2.8230981e-10
+      value: -2.8230981e-10
       objectReference: {fileID: 0}
     - target: {fileID: 2001554084, guid: 45f2c79cd3c16454c8d41d852012849c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11660,7 +11660,7 @@ GameObject:
   - component: {fileID: 2131530250}
   - component: {fileID: 2131530249}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: Pause Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11715,7 +11715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
